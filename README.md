@@ -5,4 +5,4 @@ The objective of drug repositioning is to apply existing drugs to different dise
 
 This work augments and takes further the issues discussed in https://github.com/kenmcgarry/UKCI2015-side-effects
 
-# This is work in progress and the R files will definately change over the next few weeks.
+# This is work in progress and the R files will change over the next few weeks.
