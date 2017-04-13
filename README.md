@@ -14,5 +14,6 @@ References
 
 > Campillos M, Kuhn M, Gavin AC, Jensen LJ, Bork P (2008). Drug Target Identification Using Side-Effect Similarity. *Science* doi:[10.1126/science.1158140](http://dx.doi.org/10.1126/science.1158140)
 
+> McGarry K, Slater N, and Amaning A, (2015). Identifying candidate drugs for repositioning by graph based modeling techniques based on drug side-effects, *The 15th UK Workshop on Computational Intelligence*, UKCI-2015, Exeter, Uk, 7th-9th Sept, 2015.
 
 # This is work in progress and the R files will change over the next few weeks.
