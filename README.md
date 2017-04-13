@@ -5,4 +5,11 @@ The objective of drug repositioning is to apply existing drugs to different dise
 
 This work augments and takes further the issues discussed in https://github.com/kenmcgarry/UKCI2015-side-effects
 
+References
+
+> Kuhn M, Campillos M, Letunic I, Jensen LJ, Bork P (2010) A side effect resource to capture phenotypic effects of drugs. *Molecular Systems Biology*. doi:[10.1038/msb.2009.98](http://dx.doi.org/10.1038/msb.2009.98)
+
+> Campillos M, Kuhn M, Gavin AC, Jensen LJ, Bork P (2008). Drug Target Identification Using Side-Effect Similarity. *Science* doi:[10.1126/science.1158140](http://dx.doi.org/10.1126/science.1158140)
+
+
 # This is work in progress and the R files will change over the next few weeks.
