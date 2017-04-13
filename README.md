@@ -5,7 +5,7 @@ The objective of  `drug repositioning` is to apply existing drugs to different d
 
 This work augments and takes further the issues we discussed in [UKCI-2015](https://github.com/kenmcgarry/UKCI2015-side-effects)
 
-References
+### References
 > Law V, Knox C, Djoumbou Y, Jewison T, Guo AC, Liu Y, Maciejewski A, Arndt D, Wilson M, Neveu V, Tang A, Gabriel G, Ly C, Adamjee S, Dame ZT, Han B, Zhou Y, Wishart DS. DrugBank 4.0: shedding new light on drug metabolism. *Nucleic Acids Res.* 2014 Jan 1;42(1):D1091-7. 24203711 
 
 > Kuhn M, Letunic I, Jensen LJ, Bork P. The SIDER database of drugs and side effects. *Nucleic Acids Res.* 2015 Oct 19. doi: 10.1093/nar/gkv1075
