@@ -3,7 +3,7 @@ Drugs with similar side-effects are potential candidates for use elsewhere, the 
 
 The objective of  `drug repositioning` is to apply existing drugs to different diseases or medical conditions than the original target, and thus alleviate to a certain extent the time and cost expended in drug development. The area of drug repositioning is a suitable application area for `computational intelligence` because numerous online databases containing technical information on drug targets, protein interactions, side-effects and biological knowledge are currently available. 
 
-This work augments and takes further the issues we discussed in [UKCI-2015](https://github.com/kenmcgarry/UKCI2015-side-effects)
+This work augments and takes further the issues we discussed in our [UKCI-2015](https://github.com/kenmcgarry/UKCI2015-side-effects) paper.
 
 ### References
 > Law V, Knox C, Djoumbou Y, Jewison T, Guo AC, Liu Y, Maciejewski A, Arndt D, Wilson M, Neveu V, Tang A, Gabriel G, Ly C, Adamjee S, Dame ZT, Han B, Zhou Y, Wishart DS. DrugBank 4.0: shedding new light on drug metabolism. *Nucleic Acids Res.* 2014 Jan 1;42(1):D1091-7. 24203711 
