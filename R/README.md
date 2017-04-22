@@ -1,5 +1,5 @@
 ### about these files
-As the code currently stands it is now generic enough to tackle any disease as long as the users know the UMLS code for their disease of interest e.g. "C0002395" is the code for Alzheimer's disease.
+As the code currently stands it is now generic enough to tackle any disease as long as the users know the UMLS https://www.nlm.nih.gov/research/umls/ code for their disease of interest e.g. "C0002395" is the code for Alzheimer's disease.
 
 `reviewers_JBI_LoadData.R` - as it suggests loads in the tsv. files and creates the R data structures.
 
