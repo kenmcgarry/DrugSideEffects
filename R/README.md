@@ -1,4 +1,6 @@
 ### about these files
+As the code currently stands it is now generic enough to tackle any disease as long as the users know the UMLS code for their disease of interest e.g. "C0002395" is the code for Alzheimer's disease.
+
 `reviewers_JBI_LoadData.R` - as it suggests loads in the tsv. files and creates the R data structures.
 
 `reviewers_JBI_DrugList.R` - performs (so far) the majority of the processing to generate the candidates drugs for repurposing.
@@ -12,5 +14,9 @@ I need to write a number functions to handle:
 
 1. Direct R communications with STITCH database - so far I manually create protein interactions using their browser.
 
-2. Pathway analysis with KEGG or Reactome - I have used hard coded solutions so far and need to make it generic with functions.
+2. Pathway analysis with KEGG or Reactome - I have used hard coded solutions so far (for Alzheimers') and need to make it generic for any disease with functions.
+
+3. Perhaps trickest of all will be to tackle the issues of relating a given side-effect to the biochemical pathways involved.
+
+4. Integrate the various the sources of disparet data in a coherent way. So far the system has been a series of isolated 
 
