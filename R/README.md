@@ -16,7 +16,7 @@ I need to write a number functions to handle:
 
 2. Pathway analysis with KEGG or Reactome - I have used hard coded solutions so far (for Alzheimers') and need to make it generic for any disease with functions.
 
-3. Perhaps trickest of all will be to tackle the issues of relating a given side-effect to the biochemical pathways involved.
+3. Perhaps trickest of all will be to tackle the issues of relating a given side-effect to the biochemical pathways involved. Requires analysis of the drugs on-targets and especially off-targets.
 
 4. Integrate the various the sources of the disparate data in a coherent way. So far the system has been a series of isolated analyses, each important in its own right but lacking an overarching synthesis. The usual way in the literature is to generate a 'fingerprint' that integrates the presence or absence of a parameter using '1s' or '0s', a method that typically generates huge arrays.
 
