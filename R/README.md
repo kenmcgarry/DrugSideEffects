@@ -23,7 +23,7 @@ load("reviewersJBIloadData.RData")
 ### Whats next?
 I need to write a number functions to handle:
 
-+ **Direct R communications** with STITCH database - so far I have manually created protein interactions using their browser.
++ **Direct R communications** with STITCH database - so far I have manually created lists of protein/drug interactions using their browser. A more generic and easier option for users would be to interrogate STITCH via an APL.
 
 + **Pathway analysis** with KEGG or Reactome - I have used hard coded solutions so far (for Alzheimers') and need to make it generic for any disease with functions.
 
