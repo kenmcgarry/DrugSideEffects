@@ -14,11 +14,11 @@ As the code currently stands it is now generic enough to tackle any disease as l
 ### Whats next?
 I need to write a number functions to handle:
 
-+ **Direct R communications** with STITCH database - so far I manually create protein interactions using their browser.
++ **Direct R communications** with STITCH database - so far I have manually created protein interactions using their browser.
 
 + **Pathway analysis** with KEGG or Reactome - I have used hard coded solutions so far (for Alzheimers') and need to make it generic for any disease with functions.
 
-+ **Infer a given side-effect to the biochemical pathways involved**. Requires analysis of the drugs on-targets and especially off-targets.
++ **Infer** a given side-effect to the biochemical pathways involved. Requires analysis of the drugs on-targets and especially off-targets.
 
 + **Integrate** the various the sources of the disparate data in a coherent way. So far the system has been a series of isolated analyses, each important in its own right but lacking an overarching synthesis. The usual way in the literature is to generate a 'fingerprint' that integrates the presence or absence of a parameter using '1s' or '0s', a method that typically generates huge arrays.
 
