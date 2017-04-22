@@ -18,5 +18,5 @@ I need to write a number functions to handle:
 
 3. Perhaps trickest of all will be to tackle the issues of relating a given side-effect to the biochemical pathways involved.
 
-4. Integrate the various the sources of disparet data in a coherent way. So far the system has been a series of isolated 
+4. Integrate the various the sources of the disparate data in a coherent way. So far the system has been a series of isolated analyses, each important in its own right but lacking an overarching synthesis. 
 
