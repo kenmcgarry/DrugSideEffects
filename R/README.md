@@ -18,5 +18,7 @@ I need to write a number functions to handle:
 
 3. Perhaps trickest of all will be to tackle the issues of relating a given side-effect to the biochemical pathways involved.
 
-4. Integrate the various the sources of the disparate data in a coherent way. So far the system has been a series of isolated analyses, each important in its own right but lacking an overarching synthesis. 
+4. Integrate the various the sources of the disparate data in a coherent way. So far the system has been a series of isolated analyses, each important in its own right but lacking an overarching synthesis. The usual way in the literature is to generate a 'fingerprint' that integrates the presence or absence of a parameter using '1s' or '0s', a method that typically generates huge arrays.
+
+5. Comparison with existing methods - might be tricky as not all the software is freely available.
 
