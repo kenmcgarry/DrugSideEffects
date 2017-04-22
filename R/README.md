@@ -14,7 +14,7 @@ As the code currently stands it is now generic enough to tackle any disease as l
 ### Whats next?
 I need to write a number functions to handle:
 
-1. Direct R communications with STITCH database - so far I manually create protein interactions using their browser.
++ **JSON** — 1. Direct R communications with STITCH database - so far I manually create protein interactions using their browser.
 
 2. Pathway analysis with KEGG or Reactome - I have used hard coded solutions so far (for Alzheimers') and need to make it generic for any disease with functions.
 
