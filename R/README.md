@@ -5,7 +5,7 @@ As the code currently stands it is now generic enough to tackle any disease as l
 
 `reviewers_JBI_DrugList.R` - performs (so far) the majority of the processing to generate the candidates drugs for repurposing.
 
-`reviewers_JBI_run.R` - calls in the functions defined by reviewers_JBI_DrugList.R, assumes data structures are already loaded in.
+`reviewers_JBI_run.R` - calls in the functions defined by reviewers_JBI_DrugList.R, assumes data structures are already loaded in. Then runs the functions.
 
 `reviewersJBIloadData.RData` - is the R environment from reviewers_JBI_LoadData.R avoids the need to run it afresh everytime you power up R.
 
