@@ -1,4 +1,4 @@
-[![Travis](https://img.shields.io/travis/rust-lang/rust.svg)]() (https://img.shields.io/badge/coded-in-R-working-blue.svg)
+[![Travis](https://img.shields.io/travis/rust-lang/rust.svg)]() [![Travis](https://img.shields.io/badge/coded-in-R-working-blue.svg)]()
 ## DrugSideEffects
 Drugs with similar side-effects are potential candidates for use elsewhere, the supposition is that similar side-effects may be caused by drugs targeting similar proteins. [DrugBank](http://www.drugbank.ca/ "Drugbank Homepage: Resource") and [SIDER4](http://sideeffects.embl.de/ "SIDER Homepage: Side Effect Resource")  are publicly-available resources of drug information and side-effects. It is our intention to repurpose drugs using these resources for various diseases. 
 
