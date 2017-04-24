@@ -33,3 +33,4 @@ I need to write a number functions to handle:
 
 + **Comparison** with existing methods - might be problematic as not all the software is freely available. Maybe at least two will be necessary for an evaluation.
 
+#### `Ken McGarry, Monday, 24th April 2017.`
