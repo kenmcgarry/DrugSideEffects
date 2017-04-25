@@ -5,6 +5,8 @@ As the code currently stands it is now generic enough to tackle any disease as l
 
 `reviewers_JBI_DrugList.R` - performs (so far) the majority of the processing to generate the candidates drugs for repurposing.
 
+`reviewers_JBI_pathways.R` - obtains the target proteins for each drug and performs an analysis on their shared pathways.
+
 `reviewers_JBI_run.R` - calls in the functions defined by reviewers_JBI_DrugList.R, assumes data structures are already loaded in. Then runs the functions and generates the candidate drugs. for example:
 ``` sh
 setwd("C:/R-files/sider")    # point to where my code lives
