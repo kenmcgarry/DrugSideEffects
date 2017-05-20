@@ -1,8 +1,7 @@
 ### about these files
 As the code currently stands it is now generic enough to tackle any disease as long as the users know the [UMLS](https://www.nlm.nih.gov/research/umls/ "Unified Medical Language System") code for their disease of interest e.g. "C0002395" is the code for Alzheimer's disease.
 
-`reviewers_JBI_run.R` - Run this file first. You will need to knmow the UMLS code for your disease. Calls in the functions defined by reviewers_JBI_DrugList.R, assumes data structures are already loaded in. Then runs the functions and generates the candidate drugs. for example:
-
+`reviewers_JBI_run.R` - Run this file first. You will need to knmow the UMLS code for your disease. Calls in the functions defined by reviewers_JBI_functions.R, assumes data structures are already loaded in. Then runs the functions and generates the candidate drugs. 
 
 `reviewers_JBI_LoadData.R` - as it suggests loads in the tsv. files and creates the R data structures.
 
@@ -15,8 +14,6 @@ setwd("C:/R-files/sider")    # point to where my code lives
 load("reviewersJBIloadData.RData") # load in the data structures made by reviewers_JBI_LoadData.R
 
 source("reviewers_JBI_DrugList.R")  # load in the functions required for finding lists of drugs and side-effects
-
-load("reviewersJBIloadData.RData") 
 
 ```
 
