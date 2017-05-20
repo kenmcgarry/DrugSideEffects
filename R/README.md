@@ -6,7 +6,7 @@ As the code currently stands it is now generic enough to tackle any disease as l
 
 `reviewers_JBI_LoadData.R` - as it suggests loads in the tsv. files and creates the R data structures.
 
-`reviewers_JBI_DrugList.R` - performs (so far) the majority of the processing to generate the candidates drugs for repurposing.
+`reviewers_JBI_functions.R` - contains majority (so far) of function defintions for processing to generate the candidates drugs for repurposing.
 
 `reviewers_JBI_pathways.R` - obtains the target proteins for each drug and performs an analysis on their shared pathways.
 
