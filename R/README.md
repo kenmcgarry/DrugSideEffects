@@ -1,14 +1,15 @@
 ### about these files
 As the code currently stands it is now generic enough to tackle any disease as long as the users know the [UMLS](https://www.nlm.nih.gov/research/umls/ "Unified Medical Language System") code for their disease of interest e.g. "C0002395" is the code for Alzheimer's disease.
 
+`reviewers_JBI_run.R` - Run this file first. You will need to knmow the UMLS code for your disease. calls in the functions defined by reviewers_JBI_DrugList.R, assumes data structures are already loaded in. Then runs the functions and generates the candidate drugs. for example:
+``` sh
+
 `reviewers_JBI_LoadData.R` - as it suggests loads in the tsv. files and creates the R data structures.
 
 `reviewers_JBI_DrugList.R` - performs (so far) the majority of the processing to generate the candidates drugs for repurposing.
 
 `reviewers_JBI_pathways.R` - obtains the target proteins for each drug and performs an analysis on their shared pathways.
 
-`reviewers_JBI_run.R` - calls in the functions defined by reviewers_JBI_DrugList.R, assumes data structures are already loaded in. Then runs the functions and generates the candidate drugs. for example:
-``` sh
 setwd("C:/R-files/sider")    # point to where my code lives
 load("reviewersJBIloadData.RData") # load in the data structures made by reviewers_JBI_LoadData.R
 
@@ -35,4 +36,4 @@ I need to write a number functions to handle:
 
 + **Comparison** with existing methods - might be problematic as not all the software is freely available. Maybe at least two will be necessary for an evaluation. So far I have evaluated the usefulness/accuracy of the system by checking if my top ten drugs have appeared in the literature as likely candidates for repurposing. The results so far support our method.
 
-#### `Ken McGarry, Tuesday, 25th April 2017.`
+#### `Ken McGarry, Tuesday, 20th May 2017.`
