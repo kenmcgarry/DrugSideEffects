@@ -34,4 +34,4 @@ I need to write a number functions to handle:
 
 + **Comparison** with existing methods - might be problematic as not all the software is freely available. Maybe at least two will be necessary for an evaluation. So far I have evaluated the usefulness/accuracy of the system by checking if my top ten drugs have appeared in the literature as likely candidates for repurposing. The results so far support our method.
 
-#### `Ken McGarry, Wednesday, 25th May 2017.`
+#### `Ken McGarry, Friday, 26th May 2017.`
