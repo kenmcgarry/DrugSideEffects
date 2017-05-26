@@ -36,6 +36,6 @@ I need to write a number functions to handle:
 working functions can now handle:
 + **Pathway analysis** with KEGG and Reactome for groups of gene/proteins
 
-+ **GO analysis** with for each gene/protein
++ **GO analysis** for each gene/protein
 
 #### `Ken McGarry, Friday, 26th May 2017.`
