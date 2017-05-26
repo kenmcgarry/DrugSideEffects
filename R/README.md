@@ -33,8 +33,8 @@ I need to write a number functions to handle:
 + **Comparison** with existing methods - might be problematic as not all the software is freely available. Maybe at least two will be necessary for an evaluation. So far I have evaluated the usefulness/accuracy of the system by checking if my top ten drugs have appeared in the literature as likely candidates for repurposing. The results so far support our method.
 
 ### completed
-working functions to handle:
-+ **Pathway analysis** with KEGG and Reactome
+working functions can now handle:
++ **Pathway analysis** with KEGG and Reactome for groups of gene/proteins
 
 + **GO analysis** with for each gene/protein
 
