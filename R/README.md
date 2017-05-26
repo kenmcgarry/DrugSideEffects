@@ -26,12 +26,16 @@ I need to write a number functions to handle:
 
 + **Direct R communications** with STITCH database - so far I have manually created lists of protein/drug interactions using their browser. A more generic and easier option for users would be to interrogate STITCH via an API.
 
-+ **Pathway analysis** with KEGG or Reactome - I have used hard coded solutions so far (for Alzheimers') and need to make it generic for any disease with functions.
-
 + **Infer** a given side-effect to the biochemical pathways involved. Requires analysis of the drugs on-targets and especially off-targets.
 
 + **Integrate** the various the sources of the disparate data in a coherent way. So far the system has been a series of isolated analyses, each important in its own right but lacking an overarching synthesis. The usual way in the literature is to generate a 'fingerprint' that integrates the presence or absence of a parameter using '1s' or '0s', a method that typically generates huge arrays.
 
 + **Comparison** with existing methods - might be problematic as not all the software is freely available. Maybe at least two will be necessary for an evaluation. So far I have evaluated the usefulness/accuracy of the system by checking if my top ten drugs have appeared in the literature as likely candidates for repurposing. The results so far support our method.
+
+### completed
+working functions to handle:
++ **Pathway analysis** with KEGG and Reactome
+
++ **GO analysis** with for each gene/protein
 
 #### `Ken McGarry, Friday, 26th May 2017.`
