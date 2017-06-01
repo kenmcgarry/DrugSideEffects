@@ -9,6 +9,8 @@ As the code currently stands it is now generic enough to tackle any disease as l
 
 `reviewers_JBI_pathways.R` - obtains the target proteins for each drug and performs an analysis on their shared pathways.
 
+`reviewers_JBI_integrate.R` - combine all the scores and metrics from pathway analysis, GO and DO, on-targets etc etc.
+
 ```
 setwd("C:/R-files/sider")    # point to where my code lives
 load("reviewersJBIloadData.RData") # load in the data structures made by reviewers_JBI_LoadData.R
