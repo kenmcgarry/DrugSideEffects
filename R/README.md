@@ -9,6 +9,8 @@ As the code currently stands it is now generic enough to tackle any disease as l
 
 `reviewers_JBI_pathways.R` - obtains the target proteins for each drug and performs an analysis on their shared pathways.
 
+`reviewers_JBI_chemstructure.R` - obtains the similarities between the 77 drugs (8 conventional + 69 candidate).
+
 `reviewers_JBI_integrate.R` - combine all the scores and metrics from pathway analysis, GO and DO, on-targets etc etc.
 
 ```
