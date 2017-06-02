@@ -40,6 +40,6 @@ working functions can now handle:
 
 + **Integrate** I used a variation on the Jaccard coefficient to integrate the disparate data in a coherent way. 
 
-+ **Comparison** with existing methods - I compared our system with PREDICT (Gottlieb,2011) and the systems by Zhang (2014) and Wu 2013). Results are not quite the same but a numbber of drugs have been cosnsitently identified as candidates by the four systems. Previuosly, I have evaluated the usefulness/accuracy of the system by checking if my top ten drugs have appeared in the literature as likely candidates for repurposing. The results so far support our method.
++ **Comparison** with existing methods - I compared our system with PREDICT (Gottlieb,2011) and the systems by Zhang (2014) and Wu 2013). Results are not quite the same but a number of drugs have been consistently identified as candidates by the four systems. Previously, I have evaluated the usefulness/accuracy of the system by checking if my top ten drugs have appeared in the literature as likely candidates for repurposing. The results so far support our method.
 
 #### `Ken McGarry, Friday, 2nd June 2017.`
