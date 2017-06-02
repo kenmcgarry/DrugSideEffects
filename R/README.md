@@ -32,8 +32,6 @@ I need to write a number functions to handle:
 
 + **Infer** a given side-effect to the biochemical pathways involved. Requires analysis of the drugs on-targets and especially off-targets.
 
-+ **Integrate** the various the sources of the disparate data in a coherent way. So far the system has been a series of isolated analyses, each important in its own right but lacking an overarching synthesis. The usual way in the literature is to generate a 'fingerprint' that integrates the presence or absence of a parameter using '1s' or '0s', a method that typically generates huge arrays.
-
 + **Comparison** with existing methods - might be problematic as not all the software is freely available. Maybe at least two will be necessary for an evaluation. So far I have evaluated the usefulness/accuracy of the system by checking if my top ten drugs have appeared in the literature as likely candidates for repurposing. The results so far support our method.
 
 ### completed
@@ -41,5 +39,9 @@ working functions can now handle:
 + **Pathway analysis** with KEGG and Reactome for groups of gene/proteins
 
 + **GO analysis** for each gene/protein
+
++ **Integrate** I used a variation on the Jaccard coefficient to integrate the disparate data in a coherent way. 
+
++ **Comparison** with existing methods - I compared our system with PREDICT (Gottlieb,2011) and the systems by Zhang (2014) and Wu 2013). Results are not quite the same but a numbber of drugs have been cosnsitently identified as candidates by the four systems. Previuosly, I have evaluated the usefulness/accuracy of the system by checking if my top ten drugs have appeared in the literature as likely candidates for repurposing. The results so far support our method.
 
 #### `Ken McGarry, Friday, 2nd June 2017.`
