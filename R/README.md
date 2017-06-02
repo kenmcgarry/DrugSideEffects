@@ -42,4 +42,4 @@ working functions can now handle:
 
 + **GO analysis** for each gene/protein
 
-#### `Ken McGarry, Wednesday, 1st June 2017.`
+#### `Ken McGarry, Friday, 2nd June 2017.`
