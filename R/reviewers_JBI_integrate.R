@@ -20,7 +20,7 @@ keytypes(org.Hs.eg.db)
 setwd("C:/R-files/sider")    # point to where my code lives
 load("reviewersJBIloadData.RData") # load in the data structures made by reviewers_JBI_LoadData.R
 load("reviewers_candidates.RData")
-load("1stJune2017.RData")
+load("7thJune2017.RData")
 source("reviewers_JBI_functions.R")  # 
 
 # Jaccard similarity coefficient is used to generate an association score to calculate the
@@ -63,12 +63,14 @@ collate_scores <- cbind(inds_score,se_score,on_score)
 collate_scores <- jaccard(collate_scores)  # ensure Matrix library is loaded.
 collate_scores <- diag(collate_scores)
 candidate_list_scores <- cbind(candidate_list,collate_scores)
-candidate_list_scores <- arrange(candidate_list_scores,desc(collate_scores))
-head(candidate_list_scores)
 
+head(candidate_list_scores)candidate_list_scores <- arrange(candidate_list_scores,desc(collate_scores))
 
-
-
+print.xtable(xtable(candidate_list_scores))
+# Carbidopa
+# "Apathy"                          "Aphasia"                         "Flat affect"                    
+# Hypokinesia"                     "Libido increased"                "Muscle contractions involuntary"
+# Paranoia"   
 
 
 
