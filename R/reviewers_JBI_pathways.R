@@ -1,5 +1,6 @@
 # reviewers_JBI_pathways.R
-# analysis of pathway information based on membership proteinS
+# 1. analysis of pathway information based on membership proteinS
+# 2. also ontological similarity analysis
 
 library(igraph)
 library(dplyr)
@@ -64,13 +65,14 @@ enrichMap(x, layout=igraph::layout.fruchterman.reingold, fixed=FALSE, vertex.lab
 barplot(x, showCategory=15)   # another useful plot
 
 # gene ontology enrichment
-hsGO <- godata('org.Hs.eg.db', ont="MF")
+hsGO <- godata('org.Hs.eg.db', ont="BP")
 genes_to_test <- na.omit(candidate_targets$entrezid) # get rid of NA
 genes_to_test <- sort(genes_to_test,decreasing = TRUE)
-ggo <- groupGO(gene     = genes_to_test, OrgDb = org.Hs.eg.db, ont = "MF", level= 2, readable = TRUE)
+
+ggo <- groupGO(gene= genes_to_test, OrgDb = org.Hs.eg.db, ont = "BP", level= 3, readable = TRUE)
 goresult <- as.data.frame(ggo)
 goresult <- as_tibble(ggo)
-print.xtable(xtable(goresult[,1:4])) # displays GO MF table for paper.
+print.xtable(xtable(goresult[,1:4])) # displays GO table for paper.
 
 # KEGG enrichment
 mkk <- enrichMKEGG(gene = genes_to_test,organism = 'hsa')
@@ -82,4 +84,37 @@ go1 = c("GO:0004022","GO:0004024","GO:0004174")
 go2 = c("GO:0009055","GO:0005515")
 mgoSim(go1, go2, semData=hsGO, measure="Wang", combine=NULL)
 mgoSim(go1, go2, semData=d, measure="Wang")
+
+# Comparison of diseases using the Disease Ontolgy (DO) http://disease-ontology.org/
+# http://bioconductor.org/packages/release/bioc/vignettes/DOSE/inst/doc/DOSE.html
+# Alzheimer's disease=DOID:10652 	
+# Parkinsons=DOID:14330
+# Tachycardia = DOID:0060674 	
+# mental disorder= DOID:1561
+# depression=DOID:1596
+# Fatigue= 	DOID:8544
+# bipolar disorder=DOID:3312
+# Anxiety = DOID:2030
+# Ataxia=DOID:0050951
+# Migraine=DOID:6364 	
+# Epilepsy=DOID:1826
+# Restless legs syndrome=DOID:0050425
+# Hypotension=DOID:4723
+DOnames <- c("Alzheimers","Parkinsons","Mental disorder","Depression","Fatigue","Bipolar disorder",
+             "Anxiety","Migraine","Epilepsy","Restless legs","Hypotension")
+
+listDO1<-c("DOID:10652","DOID:14330","DOID:1561","DOID:1596","DOID:8544",
+           "DOID:3312","DOID:2030","DOID:6364","DOID:1826","DOID:0050425","DOID:4723")
+s<-doSim(listDO1,listDO1,measure="Wang")
+rownames(s) <- DOnames # row and column names are the same
+colnames(s) <- DOnames
+simplot(s,color.low="white",color.high="lightgreen",labs=TRUE,digits=2,labs.size=5,
+        font.size=14, xlab="",ylab="")
+
+# similarity coefficients for gene sets
+g1 <- c("84842", "2524", "10590", "3070", "91746")
+g2 <- c("84289", "6045", "56999", "9869")
+DOSE::geneSim(g1, g2, measure="Wang", combine="BMA")
+
+
 
