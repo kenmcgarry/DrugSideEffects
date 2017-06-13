@@ -18,7 +18,7 @@ setwd("C:/R-files/sider")    # point to where my code lives
 load("reviewersJBIloadData.RData") # load in the data structures made by reviewers_JBI_LoadData.R
 load("reviewers_candidates.RData")
 source("reviewers_JBI_functions.R")  # load in the functions required for finding lists of drugs and side-effects
-
+load("12thJune2017.RData")
 
 # Create a structure to hold all known drugs treating your particular disease of interest
 # Obviously instantiate these functions before calling them.
@@ -43,10 +43,6 @@ mycandidates <- search_similardrugs(common_list,drug_list) # what drugs could be
 drugs_used <- sample(drugs_used)
 
 plot_venn(drugs_used,se_list) # No more than 5 drugs max, or Venn will not work!!!!
-
-
-
-
 
 
 

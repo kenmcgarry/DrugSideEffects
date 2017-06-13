@@ -52,8 +52,7 @@ get_commonsefx <- function(dlist,selist){
   ndrugs <- length(dlist)
   sidefx <- rep("",ndrugs)  # for every drug in dlist, create a membership entry holding the side-effects
   for (i in 1:ndrugs){
-  sidefx[i] <- selist[i] # now populate it from selist
-}
+  sidefx[i] <- selist[i]} # now populate it from selist
 
   group <- selist # create same sized lists but "group" will contain TRUE or FALSE strings for each side-effect
   universe <- unique(unlist(sidefx))  # universe is all the side-effects for each drug
@@ -73,17 +72,21 @@ get_repos_sideeffects <- function(dlist,selist){
   allSE <- get_commonsefx(dlist,selist)
   # if we have fewer than 3 common side-effects then prune drugs
   if(length(allSE) < 3 & ndrugs > 2){
-    cat("\nNo common side effects found for all drugs in your list- pruning search space")
+    cat("\nNo common side effects found for all drugs in your list- pruning search space #1")
     npdrugs <- round(ndrugs/2)
     cat("\nRandomly selecting",npdrugs,"drugs")
     prune_drug_list <- sample(dlist, npdrugs)  # sample the new shorter list of drugs
     cat("\nI have selected",prune_drug_list)
     se_prune_list <- get_sideeffects(prune_drug_list) # get the list of side-effects for our shorter list of drugs
-    allSE <- get_commonsefx(prune_drug_list,se_prune_list)
-    #plot_venn(prune_drug_list,se_prune_list)
-  }
+    allSE <- get_commonsefx(prune_drug_list,se_prune_list)}
+  
+  if(length(allSE) >= 3){
+    cat("\nFound",length(allSE),"common side effects for all drugs in your list.")
+    repstuff <- list(sideeffects=allSE, drugs=dlist)
+    return(repstuff)}
+  
   if(length(allSE) < 3 & ndrugs > 2){  ### Try pruning again
-    cat("\nAgain, no common side effects found for all drugs in your list- pruning search space again")
+    cat("\nAgain, no common side effects found for all drugs in your list- pruning search space again #2")
     npdrugs <- length(prune_drug_list)
     npdrugs <- round(npdrugs/2)
     cat("\nRandomly selecting",npdrugs,"drugs")
@@ -92,7 +95,32 @@ get_repos_sideeffects <- function(dlist,selist){
     se_prune_list <- get_sideeffects(prune_drug_list) # get the list of side-effects for our shorter list of drugs
     allSE <- get_commonsefx(prune_drug_list,se_prune_list)}
   
-  if(length(allSE) >= 2){
+  if(length(allSE) >= 3){
+    cat("\nFound",length(allSE),"common side effects for all drugs in your list.")
+    repstuff <- list(sideeffects=allSE, drugs=prune_drug_list)
+    return(repstuff)}
+  
+  if(length(allSE) < 3 & ndrugs > 8){  ### Try pruning again
+    cat("\nAgain, no common side effects found for all drugs in your list- pruning search space again #3")
+    npdrugs <- length(prune_drug_list)
+    npdrugs <- round(npdrugs/2)
+    cat("\nRandomly selecting",npdrugs,"drugs")
+    prune_drug_list <- sample(prune_drug_list, npdrugs)  # sample the new shorter list of drugs
+    cat("\nI have selected",prune_drug_list)
+    se_prune_list <- get_sideeffects(prune_drug_list) # get the list of side-effects for our shorter list of drugs
+    allSE <- get_commonsefx(prune_drug_list,se_prune_list)}
+  
+  if(length(allSE) < 3 & ndrugs > 4){  ### Try pruning again
+    cat("\nAgain, no common side effects found for all drugs in your list- pruning search space again #4")
+    npdrugs <- length(prune_drug_list)
+    npdrugs <- round(npdrugs/2)
+    cat("\nRandomly selecting",npdrugs,"drugs")
+    prune_drug_list <- sample(prune_drug_list, npdrugs)  # sample the new shorter list of drugs
+    cat("\nI have selected",prune_drug_list)
+    se_prune_list <- get_sideeffects(prune_drug_list) # get the list of side-effects for our shorter list of drugs
+    allSE <- get_commonsefx(prune_drug_list,se_prune_list)}
+  
+  if(length(allSE) >= 3){
     cat("\nFound",length(allSE),"common side effects for all drugs in your list.")
     repstuff <- list(sideeffects=allSE, drugs=prune_drug_list)
     return(repstuff)}
@@ -179,10 +207,10 @@ latex_to_table <- function(thedata){
 plot_venn <- function(dlist,sidefx) {
   plot.new()
   dlen <- length(dlist)
-  if(dlen==2) {alpha<-c(0.5,0.5);fill=c("red", "blue"); just=list(c(0.6,1),c(0,0))};
-  if(dlen==3) {alpha<-c(0.5,0.5,0.5);fill=c("red", "blue","green");just=list(c(0.6,1),c(0,0),c(0,0))};
-  if(dlen==4) {alpha<-c(0.5,0.5,0.5,0.5);fill=c("red", "blue","green","pink");just=list(c(0.6,1),c(0,0) ,c(0,0),c(1,1))};
-  if(dlen==5) {alpha<-c(0.5,0.5,0.5,0.5,0.5);fill=c("red", "blue","green","pink","yellow");just=list(c(0.6,1),c(0,0),c(0,0),c(1,1),c(1,0))};
+  if(dlen==2){alpha<-c(0.5,0.5);fill=c("red", "blue"); just=list(c(0.6,1),c(0,0))};
+  if(dlen==3){alpha<-c(0.5,0.5,0.5);fill=c("red", "blue","green");just=list(c(0.6,1),c(0,0),c(0,0))};
+  if(dlen==4){alpha<-c(0.5,0.5,0.5,0.5);fill=c("red", "blue","green","pink");just=list(c(0.6,1),c(0,0) ,c(0,0),c(1,1))};
+  if(dlen==5){alpha<-c(0.5,0.5,0.5,0.5,0.5);fill=c("red", "blue","green","pink","yellow");just=list(c(0.6,1),c(0,0),c(0,0),c(1,1),c(1,0))};
   
   venn.plot <- venn.diagram((sidefx[1:dlen]), 
                 filename=NULL, 
