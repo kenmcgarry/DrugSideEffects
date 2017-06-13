@@ -23,12 +23,13 @@ source("reviewers_JBI_functions.R")  # load in the functions required for findin
 # Create a structure to hold all known drugs treating your particular disease of interest
 # Obviously instantiate these functions before calling them.
 
-drug_list <- get_drugs("C0002395",restrictedlist)  # umls code for Alzheimers but what drugs are used to treat it?
-drug_list <- get_drugs("C0020179",restrictedlist)  # umls code for Huntingdon's but what drugs are used to treat it?
-drug_list <- get_drugs("C0149925",restrictedlist)  # umls code for small cell lung cancer but what drugs are used to treat it?
-drug_list <- get_drugs("C0007131",restrictedlist)  # umls code for non small cell lung cancer but what drugs are used to treat it?
+drug_list <- get_drugs("C0002395",restrictedlist)  # umls code for Alzheimers
+drug_list <- get_drugs("C0020179",restrictedlist)  # umls code for Huntingdons
+drug_list <- get_drugs("C0149925",restrictedlist)  # umls code for small cell lung cancer
+drug_list <- get_drugs("C0007131",restrictedlist)  # umls code for non small cell lung cancer
 drug_list <- get_drugs("C0024141",restrictedlist)  # umls code for systemic lupus erythematosus
-#  C0262584   C0149925   C0278987 C0162296
+drug_list <- get_drugs("C0029408",restrictedlist)  # umls code for Osteoarthritis
+drug_list <- get_drugs("C0003873",restrictedlist)  # umls code for Rheumatoid arthritis
 
 se_list <- get_sideeffects(drug_list) # what side-effects do these drugs have?
 
