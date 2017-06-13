@@ -34,4 +34,4 @@ working functions can now handle:
 
 + **Comparison** with existing methods - I compared our system with PREDICT (Gottlieb,2011) and the systems by Zhang (2014) and Wang 2013). Results are not quite the same but a number of drugs have been consistently identified as candidates by the four systems. Previously, I have evaluated the usefulness/accuracy of the system by checking if my top ten drugs have appeared in the literature as likely candidates for repurposing. The results so far support our method.
 
-#### `Ken McGarry, Friday, 12th June 2017.`
+#### `Ken McGarry, Tuesday, 13th June 2017.`
