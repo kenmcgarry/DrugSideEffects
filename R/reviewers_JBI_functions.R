@@ -203,8 +203,8 @@ latex_to_table <- function(thedata){
   print(tli.table,floating=FALSE)
 }
 
-# Create the Venn diagram but recall that no more than 5 drugs can be plotted - limitation of package.
-plot_venn <- function(dlist,sidefx) {
+# Create the Venn diagram but recall that no more than 5 drugs can be plotted - limitation of vennpackage.
+plot_venn <- function(dlist,sidefx,index) {
   plot.new()
   dlen <- length(dlist)
   if(dlen==2){alpha<-c(0.5,0.5);fill=c("red", "blue"); just=list(c(0.6,1),c(0,0))};
@@ -212,7 +212,7 @@ plot_venn <- function(dlist,sidefx) {
   if(dlen==4){alpha<-c(0.5,0.5,0.5,0.5);fill=c("red", "blue","green","pink");just=list(c(0.6,1),c(0,0) ,c(0,0),c(1,1))};
   if(dlen==5){alpha<-c(0.5,0.5,0.5,0.5,0.5);fill=c("red", "blue","green","pink","yellow");just=list(c(0.6,1),c(0,0),c(0,0),c(1,1),c(1,0))};
   
-  venn.plot <- venn.diagram((sidefx[1:dlen]), 
+  venn.plot <- venn.diagram((sidefx[index]), 
                 filename=NULL, 
                 fill=fill, 
                 alpha=alpha, 

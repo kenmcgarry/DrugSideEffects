@@ -42,7 +42,8 @@ mycandidates <- search_similardrugs(common_list,drug_list) # what drugs could be
 
 drugs_used <- sample(drugs_used)
 
-plot_venn(drugs_used,se_list) # No more than 5 drugs max, or Venn will not work!!!!
+dindex <- match(drugs_used, drug_list)
+plot_venn(drugs_used,se_list,dindex) # No more than 5 drugs max, or Venn will not work!!!!
 
 
 
