@@ -22,7 +22,7 @@ library(ChemmineOB)
 setwd("C:/R-files/sider")    # point to where my code lives
 load("reviewersJBIloadData.RData") # load in the data structures made by reviewers_JBI_LoadData.R
 load("reviewers_candidates.RData")
-load("7thJune2017.RData")
+load("8thJune2017.RData")
 source("reviewers_JBI_functions.R")  # load in the functions required for finding lists of drugs and side-effects
 
 # For each candidate drug, get the diseases it treats

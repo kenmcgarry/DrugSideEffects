@@ -80,11 +80,23 @@ get_repos_sideeffects <- function(dlist,selist){
     cat("\nI have selected",prune_drug_list)
     se_prune_list <- get_sideeffects(prune_drug_list) # get the list of side-effects for our shorter list of drugs
     allSE <- get_commonsefx(prune_drug_list,se_prune_list)
-    plotvenn(prune_drug_list,se_prune_list)
-  }else{
-    cat("\nFound",length(allSE),"common side effects found for all drugs in your list.")
-    return(allSE)}
-  if(allSE<1){
+    #plot_venn(prune_drug_list,se_prune_list)
+  }
+  if(length(allSE) < 3 & ndrugs > 2){  ### Try pruning again
+    cat("\nAgain, no common side effects found for all drugs in your list- pruning search space again")
+    npdrugs <- length(prune_drug_list)
+    npdrugs <- round(npdrugs/2)
+    cat("\nRandomly selecting",npdrugs,"drugs")
+    prune_drug_list <- sample(prune_drug_list, npdrugs)  # sample the new shorter list of drugs
+    cat("\nI have selected",prune_drug_list)
+    se_prune_list <- get_sideeffects(prune_drug_list) # get the list of side-effects for our shorter list of drugs
+    allSE <- get_commonsefx(prune_drug_list,se_prune_list)}
+  
+  if(length(allSE) >= 2){
+    cat("\nFound",length(allSE),"common side effects for all drugs in your list.")
+    repstuff <- list(sideeffects=allSE, drugs=prune_drug_list)
+    return(repstuff)}
+  if(length(allSE) <1){
     cat("\nNo common side effects found for all drugs in your list- Exiting.")
     return(NULL)}
 }
@@ -166,18 +178,24 @@ latex_to_table <- function(thedata){
 # Create the Venn diagram but recall that no more than 5 drugs can be plotted - limitation of package.
 plot_venn <- function(dlist,sidefx) {
   plot.new()
-  venn.plot <- venn.diagram((sidefx[1:5]), 
+  dlen <- length(dlist)
+  if(dlen==2) {alpha<-c(0.5,0.5);fill=c("red", "blue"); just=list(c(0.6,1),c(0,0))};
+  if(dlen==3) {alpha<-c(0.5,0.5,0.5);fill=c("red", "blue","green");just=list(c(0.6,1),c(0,0),c(0,0))};
+  if(dlen==4) {alpha<-c(0.5,0.5,0.5,0.5);fill=c("red", "blue","green","pink");just=list(c(0.6,1),c(0,0) ,c(0,0),c(1,1))};
+  if(dlen==5) {alpha<-c(0.5,0.5,0.5,0.5,0.5);fill=c("red", "blue","green","pink","yellow");just=list(c(0.6,1),c(0,0),c(0,0),c(1,1),c(1,0))};
+  
+  venn.plot <- venn.diagram((sidefx[1:dlen]), 
                 filename=NULL, 
-                fill=c("red", "blue","green","pink", "yellow"), 
-                alpha=c(0.5,0.5,0.5,0.5,0.5), 
+                fill=fill, 
+                alpha=alpha, 
                 cex = 2, 
                 cat.fontface=2, 
                 margins =c(12,12),
-                cat.just=list(c(0.6,1) , c(0,0) , c(0,0) , c(1,1) , c(1,0)),
+                cat.just=just,
                 cat.cex=2,
-                cat.dist = rep(0.1, 5),
+                cat.dist = rep(0.1, dlen),
                 lty = "blank",
-                category.names=(dlist[1:5]))
+                category.names=(dlist[1:dlen]))
   grid.newpage()
   grid.draw(venn.plot)}
 
