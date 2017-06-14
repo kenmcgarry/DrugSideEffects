@@ -160,4 +160,26 @@ auc[[1]].auc <- performance(pred1, "auc")
 slot(auc[[1]], "y.values")
 
 
+# --------------------------- compute statistics for each drug PPI network --------------------------------
+# do the combined protein networks
+
+setwd("C:/R-files/reposition/proteins") # need to point where STITCH datafiles are.
+
+temp <-  list.files(pattern="*.txt") # list of all .txt files now in temp
+allstats <- data.frame()
+
+for (i in 1:length(temp)){
+  mydata <- read.delim(temp[i], header=TRUE,sep='\t')
+  mydata <- mydata[,1:2]
+  mydata <-graph.data.frame(mydata,directed=FALSE)
+  in1 <- get_gstatistics_long(mydata)
+  allstats <- rbind(allstats,in1[nrow(in1),])
+} 
+
+rm(list = ls(pattern = glob2rx("*.txt"))) # get rid of useless file data from memory
+table1 <- xtable(allstats,digits=c(3,3,0,0,3,0,3,3,3,3,3)) # latex table
+
+
+
+
 

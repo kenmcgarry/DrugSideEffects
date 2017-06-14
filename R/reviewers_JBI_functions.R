@@ -204,7 +204,7 @@ latex_to_table <- function(thedata){
 }
 
 # Create the Venn diagram but recall that no more than 5 drugs can be plotted - limitation of vennpackage.
-plot_venn <- function(dlist,sidefx,index) {
+plot_venn <- function(dlist,sidefx,index){
   plot.new()
   dlen <- length(dlist)
   if(dlen==2){alpha<-c(0.5,0.5);fill=c("red", "blue"); just=list(c(0.6,1),c(0,0))};
