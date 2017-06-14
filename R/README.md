@@ -32,6 +32,6 @@ working functions can now handle:
 
 + **Comparison** with existing methods - I compared our system with PREDICT (Gottlieb,2011) and the systems by Zhang (2014) and Wang 2013). Results are not quite the same but a number of drugs have been consistently identified as candidates by the four systems. Previously, I have evaluated the usefulness/accuracy of the system by checking if my top ten drugs have appeared in the literature as likely candidates for repurposing. The results so far support our method.
 
-+ **Other diseases** At the moment I have concentrated on Alzhiemers disease, the system needs to be tested with others. I will try where possible to mirror the diseases tackled by Zhang and Wang.
++ **Other diseases** At the moment I have concentrated on Alzhiemers disease, the system needs to be tested with others. I tackled the diseases investigated by Zhang and Wang.
 
 #### `Ken McGarry, Wednesday, 14th June 2017.`
