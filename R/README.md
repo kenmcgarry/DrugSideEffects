@@ -18,9 +18,7 @@ As the code currently stands it is now generic enough to tackle any disease as l
 `venn-5.pdf` - example Venn Diagram for Alzheimer's drugs and their common overlapping side-effects. The diagram is limited to five groups (drugs) maximum and so the central value of 10 is in fact 8, because 9 drugs were used to generate the candidate drugs. Just be aware of this limitation when plotting Venn's if you have more than five drugs. Generally, the more drugs you conduct the search with, then the fewer side-effects these will have in common.
 
 ### whats next?
-I need to write a number functions to handle:
-
-+ **Other diseases** At the moment I have concentrated on Alzhiemers disease, the system needs to be tested with others. I will try where possible to mirror the diseases tackled by Zhang, Wang and Gottlieb.
+I guess the code in many places would be neater if I implemented more functions. This will have to wait. However, I shall tidy up the LaTex paper and resubmit to Journal of Biomedical Informatics in a day or so.
 
 ### completed
 working functions can now handle:
@@ -34,4 +32,6 @@ working functions can now handle:
 
 + **Comparison** with existing methods - I compared our system with PREDICT (Gottlieb,2011) and the systems by Zhang (2014) and Wang 2013). Results are not quite the same but a number of drugs have been consistently identified as candidates by the four systems. Previously, I have evaluated the usefulness/accuracy of the system by checking if my top ten drugs have appeared in the literature as likely candidates for repurposing. The results so far support our method.
 
-#### `Ken McGarry, Tuesday, 13th June 2017.`
++ **Other diseases** At the moment I have concentrated on Alzhiemers disease, the system needs to be tested with others. I will try where possible to mirror the diseases tackled by Zhang and Wang.
+
+#### `Ken McGarry, Wednesday, 14th June 2017.`
