@@ -34,4 +34,4 @@ working functions can now handle:
 
 + **Other diseases** At the moment I have concentrated on Alzhiemers disease, the system needs to be tested with others. I tackled the diseases investigated by Zhang and Wang.
 
-#### `Ken McGarry, 25th August 2017.`
+#### `Ken McGarry, 1st September 2017.`
