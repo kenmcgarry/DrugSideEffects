@@ -337,6 +337,28 @@ jaccard <- function(m) {
   return( J )
 }
 
+# From the "R in Action " book by Kabacoff.
+performance <- function(table,n=2){
+  if(!all(dim(table == c(2,2))))
+    stop("Must be a 2 x 2 table")
+  tn <- table[1,1]
+  fp <- table[1,2]  
+  fn <- table[2,1]
+  tp <- table[2,2]
+  sensitivity <- tp/(tp+fn)
+  specificity <- tn/(tn+fp)
+  ppv <- tp/(tp+fp)
+  npv <- tn/(tn+fn)
+  accuracy <- (tp+tn)/(tp+tn+fp+fn)
+  result <- paste("Sensitivity = ", round(sensitivity,n),
+                  "\nSpecificity = ", round(specificity,n),
+                  "\nPositive Predicitive Value = ", round(ppv,n),
+                  "\nNegative Predictive Value = ", round(npv,n),
+                  "\nAccuracy = ", round(accuracy,n), "\n",sep="")
+  cat(result)
+}
+
+
 # ------------ interesting dynamic variable names creation -------
 #var_names <- paste("v", 1:3, sep="")
 #for (v in druglist){ 
