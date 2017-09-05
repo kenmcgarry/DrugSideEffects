@@ -337,7 +337,7 @@ jaccard <- function(m) {
   return( J )
 }
 
-# From the "R in Action " book by Kabacoff.
+# From the "R in Action " book by Kabacoff. Calculates sensitivity and specificity. along ppv, bpv and accuracy.
 performance <- function(table,n=2){
   if(!all(dim(table == c(2,2))))
     stop("Must be a 2 x 2 table")
@@ -368,12 +368,6 @@ performance <- function(table,n=2){
 #----- for my stackoverflow plea for help -----------
 # good reply from Akrun
 # http://stackoverflow.com/questions/43522947/using-r-to-access-a-structure-dynamically-with-pasted-comands
-#universe <- c("ted","sara","fred","billy")
-#group1 <- as.logical(c("TRUE","TRUE","TRUE","TRUE"))
-#group2 <- as.logical(c("FALSE","TRUE","FALSE","TRUE"))
-#group3 <- as.logical(c("FALSE","TRUE","TRUE","TRUE"))
-#group <- list(group1, group2, group3)
-
 
 
 
