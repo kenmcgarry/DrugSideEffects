@@ -9,7 +9,7 @@ library(ROCR)
 library(eigenmodel)
 library(igraph)
 library(dplyr)
-library(tidyverse)
+library(tidyverse)  # you may have to install package 'foreign' manually
 library(stringr)
 library(ggplot2)
 library(xtable)
