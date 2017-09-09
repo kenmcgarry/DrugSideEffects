@@ -70,57 +70,52 @@ names(attrib_candidates)[3] <- "atc"
 names(attrib_candidates)[4] <- "pathway"
 names(attrib_candidates)[5] <- "dose"
 
-# edge list only
+# using A (edge list only)
 A <- get.adjacency(targets_ig, sparse=FALSE)
-lazega.leig.fit1 <- eigenmodel_mcmc(A, R=2, S=11000,burn=10000)
+repos.fit1 <- eigenmodel_mcmc(A, R=2, S=11000,burn=10000)
 
-# using A
-same.prac.op <- attrib_candidates$dose %o% attrib_candidates$dose
-same.prac <- matrix(as.numeric(same.prac.op  %in% c(1, 4, 9)), 250, 250)
-same.prac <- array(same.prac,dim=c(250, 250, 1))
-lazega.leig.fit2 <- eigenmodel_mcmc(A, same.prac, R=2,S=11000,burn=10000)
+# using disease  ontology (dose)
+dose.op <- attrib_candidates$dose %o% attrib_candidates$dose
+dose <- matrix(as.numeric(dose.op  %in% c(1, 4, 9)), 250, 250)
+dose <- array(dose,dim=c(250, 250, 1))
+repos.fit2 <- eigenmodel_mcmc(A, dose, R=2,S=11000,burn=10000)
 # -------------------------------------
 
-#using B    
-#attrib_candidates$atc <- as.factor(attrib_candidates$atc)
-same.off.op <- attrib_candidates$pathway %o% attrib_candidates$pathway
-same.off <- matrix(as.numeric(same.off.op %in% c(1, 4, 9)), 250, 250)
-same.off <- array(same.off,dim=c(250, 250, 1)) 
-lazega.leig.fit3 <- eigenmodel_mcmc(A, same.off,R=2, S=11000, burn=10000)
+#using biological pathways (pathway)    
+pathway.op <- attrib_candidates$pathway %o% attrib_candidates$pathway
+pathway <- matrix(as.numeric(pathway.op %in% c(1, 4, 9)), 250, 250)
+pathway <- array(pathway,dim=c(250, 250, 1)) 
+repos.fit3 <- eigenmodel_mcmc(A, pathway,R=2, S=11000, burn=10000)
 
-lat.sp.1 <- eigen(lazega.leig.fit1$ULU_postmean)$vec[, 1:2]
-lat.sp.2 <- eigen(lazega.leig.fit2$ULU_postmean)$vec[, 1:2]
-lat.sp.3 <- eigen(lazega.leig.fit3$ULU_postmean)$vec[, 1:2]
+lat.sp.1 <- eigen(repos.fit1$ULU_postmean)$vec[, 1:2]
+lat.sp.2 <- eigen(repos.fit2$ULU_postmean)$vec[, 1:2]
+lat.sp.3 <- eigen(repos.fit3$ULU_postmean)$vec[, 1:2]
 
-apply(lazega.leig.fit1$SL_postsamp,2,mean)
-apply(lazega.leig.fit2$SL_postsamp,2,mean)
-apply(lazega.leig.fit3$SL_postsamp,2,mean)
+apply(repos.fit1$SL_postsamp,2,mean)
+apply(repos.fit2$SL_postsamp,2,mean)
+apply(repos.fit3$SL_postsamp,2,mean)
 
 
+# RECREATE SAME MODELS BUT WITH LOOP TO IMPLEMENT n-fold CROSS-VALIDATION 
 # CHUNK 1
 A <- get.adjacency(targets_ig,sparse=FALSE)
-#A <- get.adjacency(lazega, sparse=FALSE)
 dim(A)
 
 v.attrs <- get.data.frame(targets_ig, what="vertices")
-#v.attrs <- get.data.frame(lazega, what="vertices")
 # CHUNK 30
 perm.index <- sample(1:31125) # 250 * 249/2= 31,125 permutations
-#perm.index <- sample(1:630) #  permutations
 nfolds <- 3
 nmiss <- 31125/nfolds
-#nmiss <- 630/nfolds
-
 Avec <- A[lower.tri(A)]
 Avec.pred1 <- numeric(length(Avec))
 
-perf <- list()
-auc <- list()
+perf <- list() # create empty vector of perfs
+auc <- list() # create empty vector of area under curves
   
 for (j in 1:3){
   if(j==1) modelversion <- NULL   # select all variables A + B
-  if(j==2) modelversion <- same.off   # select only A
-  if(j==3) modelversion <- same.prac  # select only B
+  if(j==2) modelversion <- dose   # select only A
+  if(j==3) modelversion <- pathway  # select only B
 # CHUNK 31 - cross validation.
   for(i in seq(1,nfolds)){
     # Index of missing values.
@@ -145,11 +140,11 @@ for (j in 1:3){
   pred1 <- floor(Avec.pred1)
   Avec[Avec==2] <- 0
   pred1 <- prediction(Avec.pred1, Avec)
-  perf[j] <- performance(pred1, "tpr", "fpr")
-  auc[j] <- performance(pred1, "auc")
+  perf[j] <- ROCR::performance(pred1, "tpr", "fpr")
+  auc[j] <- ROCR::performance(pred1, "auc")
 }
 
-
+# ROC PLOT COMPARING THREE MODELS
 plot(perf[[1]], col="red", lwd=5)
 plot(perf[[2]], add = TRUE, col="blue",lwd=5)
 plot(perf[[3]], add = TRUE, col="green",lwd=5)
