@@ -156,6 +156,27 @@ auc[[1]].auc <- performance(pred1, "auc")
 slot(auc[[1]], "y.values")
 
 
+#---- use verification package for generting p-values -----
+library(verification)
+# Data used from Mason and Graham (2002).
+a <- c(1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995)
+b <- c(0,0,0,1,1,1,0,1,1,0,0,0,0,1,1)
+c <- c(.8, .8, 0, 1,1,.6, .4, .8, 0, 0, .2, 0, 0, 1,1)
+d <- c(.928,.576, .008, .944, .832, .816, .136, .584, .032, .016, .28, .024, 0, .984, .952)
+pdata <- data.frame(a,b,c, d)
+names(pdata)<- c("year", "event", "p1", "p2")
+## for model with ties
+roc.area(pdata$event, pdata$p1)
+## for model without ties
+roc.area(pdata$event, pdata$p2)
+
+## for model with ties
+roc.plot(pdata$event, pdata$p1)
+## for model without ties
+roc.plot(pdata$event, pdata$p2)
+
+
+
 # --------------------------- compute statistics for each drug PPI network --------------------------------
 # do the combined protein networks
 
