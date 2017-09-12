@@ -16,11 +16,12 @@ library(xtable)
 library(org.Hs.eg.db)
 
 setwd("C:/R-files/sider")    # point to where my code lives
-load("reviewersJBIloadData.RData") # load in the data structures made by reviewers_JBI_LoadData.R
-load("reviewers_candidates.RData")
-load("12thJune2017.RData")
-source("reviewers_JBI_functions.R")  # load in the functions required for finding lists of drugs and side-effects
+#load("reviewersJBIloadData.RData") # load in the data structures made by reviewers_JBI_LoadData.R
+#load("reviewers_candidates.RData")
+#load("12thJune2017.RData")
 
+load("complexnets.RData")
+source("reviewers_JBI_functions.R")  # load in the functions required for finding lists of drugs and side-effects
 ontargets <- read.csv(file='C://R-files//sider//drugbank-proteins.tsv', header=TRUE, sep="\t")
 
 joint_list <- names_ids(drug_list) # we need DB ids as well as DB names
@@ -104,7 +105,7 @@ dim(A)
 v.attrs <- get.data.frame(targets_ig, what="vertices")
 # CHUNK 30
 perm.index <- sample(1:31125) # 250 * 249/2= 31,125 permutations
-nfolds <- 3
+nfolds <- 5
 nmiss <- 31125/nfolds
 Avec <- A[lower.tri(A)]
 Avec.pred1 <- numeric(length(Avec))
@@ -148,7 +149,7 @@ for (j in 1:3){
 plot(perf[[1]], col="red", lwd=5)
 plot(perf[[2]], add = TRUE, col="blue",lwd=5)
 plot(perf[[3]], add = TRUE, col="green",lwd=5)
-abline(a=0, b= 1,lty=2 )
+abline(a=0, b= 1,lty=2)
 
 # CHUNK 33
 auc[[1]].auc <- performance(pred1, "auc")
