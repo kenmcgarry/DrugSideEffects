@@ -21,6 +21,7 @@ setwd("C:/R-files/sider")    # point to where my code lives
 #load("12thJune2017.RData")
 
 load("complexnets.RData")
+load("11-09-2017.RData")
 source("reviewers_JBI_functions.R")  # load in the functions required for finding lists of drugs and side-effects
 ontargets <- read.csv(file='C://R-files//sider//drugbank-proteins.tsv', header=TRUE, sep="\t")
 
@@ -110,8 +111,9 @@ nmiss <- 31125/nfolds
 Avec <- A[lower.tri(A)]
 Avec.pred1 <- numeric(length(Avec))
 
-perf <- list() # create empty vector of perfs
+perf <- list() # create empty vector of perfs for ROC-Curves
 auc <- list() # create empty vector of area under curves
+pred <- list() # create empty vector of predictions for PR-Curves
   
 for (j in 1:3){
   if(j==1) modelversion <- NULL   # select all variables A + B
@@ -140,7 +142,7 @@ for (j in 1:3){
   }
   pred1 <- floor(Avec.pred1)
   Avec[Avec==2] <- 0
-  pred1 <- prediction(Avec.pred1, Avec)
+  pred1 <- ROCR::prediction(Avec.pred1, Avec)
   perf[j] <- ROCR::performance(pred1, "tpr", "fpr")
   auc[j] <- ROCR::performance(pred1, "auc")
 }
@@ -151,8 +153,14 @@ plot(perf[[2]], add = TRUE, col="blue",lwd=5)
 plot(perf[[3]], add = TRUE, col="green",lwd=5)
 abline(a=0, b= 1,lty=2)
 
+# PR-CURVE PLOT FOR THREE MODELS - CALLED "SHITEPRED" COZ IAM NOT CONVINCED
+shitepred <- ROCR::prediction(Avec.pred1, Avec)
+#shiteperf <- ROCR::performance(shitepred,"tpr","fpr")
+shiteperf1 <- ROCR::performance(shitepred, "prec","rec")
+plot(shiteperf1)
+
 # CHUNK 33
-auc[[1]].auc <- performance(pred1, "auc")
+auc[[1]].auc <- ROCR::performance(pred1, "auc")
 slot(auc[[1]], "y.values")
 
 
