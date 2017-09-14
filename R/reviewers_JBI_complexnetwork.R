@@ -106,14 +106,20 @@ dim(A)
 v.attrs <- get.data.frame(targets_ig, what="vertices")
 # CHUNK 30
 perm.index <- sample(1:31125) # 250 * 249/2= 31,125 permutations
-nfolds <- 5
+nfolds <- 2
 nmiss <- 31125/nfolds
 Avec <- A[lower.tri(A)]
 Avec.pred1 <- numeric(length(Avec))
 
-perf <- list() # create empty vector of perfs for ROC-Curves
-auc <- list() # create empty vector of area under curves
-pred <- list() # create empty vector of predictions for PR-Curves
+perf1 <- list() # create empty vector of perfs for ROC-Curves
+auc1 <- list() # create empty vector of area under curves
+pred1 <- list() # create empty vector of predictions for PR-Curves
+perf2 <- list() # create empty vector of perfs for ROC-Curves
+auc2 <- list() # create empty vector of area under curves
+pred2 <- list() #
+perf3 <- list() # create empty vector of perfs for ROC-Curves
+auc3 <- list() # create empty vector of area under curves
+pred3 <- list() #
   
 for (j in 1:3){
   if(j==1) modelversion <- NULL   # select all variables A + B
@@ -140,24 +146,55 @@ for (j in 1:3){
     model1.pred.vec <- model1.pred[lower.tri(model1.pred)]
     Avec.pred1[A.miss.index] <- model1.pred.vec[A.miss.index]
   }
-  pred1 <- floor(Avec.pred1)
+  #pred1 <- floor(Avec.pred1)
   Avec[Avec==2] <- 0
-  pred1 <- ROCR::prediction(Avec.pred1, Avec)
-  perf[j] <- ROCR::performance(pred1, "tpr", "fpr")
-  auc[j] <- ROCR::performance(pred1, "auc")
+  if(j==1){
+    pred1 <- ROCR::prediction(Avec.pred1, Avec)
+    perf1 <- ROCR::performance(pred1, "tpr", "fpr")
+    auc1 <- ROCR::performance(pred1, "auc")}
+  if(j==2){
+    pred2 <- ROCR::prediction(Avec.pred1, Avec)
+    perf2 <- ROCR::performance(pred2, "tpr", "fpr")
+    auc2 <- ROCR::performance(pred2, "auc")}
+  if(j==3){
+    pred3 <- ROCR::prediction(Avec.pred1, Avec)
+    perf3 <- ROCR::performance(pred3, "tpr", "fpr")
+    auc3 <-  ROCR::performance(pred3, "auc")}
 }
 
 # ROC PLOT COMPARING THREE MODELS
-plot(perf[[1]], col="red", lwd=5)
-plot(perf[[2]], add = TRUE, col="blue",lwd=5)
-plot(perf[[3]], add = TRUE, col="green",lwd=5)
-abline(a=0, b= 1,lty=2)
+plot(perf1, col="red", lwd=5)
+plot(perf2, add = TRUE, col="blue",lwd=5)
+plot(perf3, add = TRUE, col="green",lwd=5)
+ 
 
-# PR-CURVE PLOT FOR THREE MODELS - CALLED "SHITEPRED" COZ IAM NOT CONVINCED
-shitepred <- ROCR::prediction(Avec.pred1, Avec)
-#shiteperf <- ROCR::performance(shitepred,"tpr","fpr")
-shiteperf1 <- ROCR::performance(shitepred, "prec","rec")
-plot(shiteperf1)
+# PR-CURVE AND ROC PLOT FOR THREE MODELS 
+# http://takayasaito.github.io/precrec/articles/introduction.html
+library(precrec)
+library(ggplot2)
+
+#--------------------- test the package/create four artificial models ------------
+samps2 <- create_sim_samples(1, 100, 100, "all")
+# Use a sample dataset created by the create_sim_samples function
+msmdat3 <- mmdata(samps2[["scores"]], samps2[["labels"]], modnames = samps2[["modnames"]])
+# Calculate ROC and Precision-Recall curves for multiple models
+mscurves <- evalmod(msmdat3)
+# Show ROC and Precision-Recall curves with the ggplot2 package
+autoplot(mscurves)
+#----------------------------------------------------------------------
+
+# convert my stuff to precrec format 
+score1 <- slot(pred1,"predictions") # must extract slot data from S3 structure
+score2 <- slot(pred2,"predictions")
+score3 <- slot(pred3,"predictions")
+msmdat <- mmdata(scores = c(score1,score2,score3), labels=c(pred1@labels,pred2@labels,pred3@labels),modnames = c("Full model","chem+ppi","chem+ontology"))
+# Calculate ROC and Precision-Recall curves for multiple models
+mscurves <- evalmod(msmdat)
+autoplot(mscurves)
+
+
+
+#----------------------------------------------------------------------------
 
 # CHUNK 33
 auc[[1]].auc <- ROCR::performance(pred1, "auc")
