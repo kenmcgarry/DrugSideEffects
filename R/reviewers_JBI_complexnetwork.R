@@ -163,9 +163,9 @@ for (j in 1:3){
 }
 
 # ROC PLOT COMPARING THREE MODELS
-plot(perf1, col="red", lwd=5)
-plot(perf2, add = TRUE, col="blue",lwd=5)
-plot(perf3, add = TRUE, col="green",lwd=5)
+#plot(perf1, col="red", lwd=5)
+#plot(perf2, add = TRUE, col="blue",lwd=5)
+#plot(perf3, add = TRUE, col="green",lwd=5)
  
 
 # PR-CURVE AND ROC PLOT FOR THREE MODELS 
@@ -174,20 +174,22 @@ library(precrec)
 library(ggplot2)
 
 #--------------------- test the package/create four artificial models ------------
-samps2 <- create_sim_samples(1, 100, 100, "all")
+#samps2 <- create_sim_samples(1, 100, 100, "all")
 # Use a sample dataset created by the create_sim_samples function
-msmdat3 <- mmdata(samps2[["scores"]], samps2[["labels"]], modnames = samps2[["modnames"]])
+#msmdat3 <- mmdata(samps2[["scores"]], samps2[["labels"]], modnames = samps2[["modnames"]])
 # Calculate ROC and Precision-Recall curves for multiple models
-mscurves <- evalmod(msmdat3)
+#mscurves <- evalmod(msmdat3)
 # Show ROC and Precision-Recall curves with the ggplot2 package
-autoplot(mscurves)
+#autoplot(mscurves)
 #----------------------------------------------------------------------
 
 # convert my stuff to precrec format 
 score1 <- slot(pred1,"predictions") # must extract slot data from S3 structure
 score2 <- slot(pred2,"predictions")
 score3 <- slot(pred3,"predictions")
-msmdat <- mmdata(scores = c(score1,score2,score3), labels=c(pred1@labels,pred2@labels,pred3@labels),modnames = c("Full model","chem+ppi","chem+ontology"))
+msmdat <- mmdata(scores = c(score1,score2,score3), 
+                 labels=c(pred1@labels,pred2@labels,pred3@labels),
+                 modnames = c("Full model","chem+ppi","pathway+ontology"))
 # Calculate ROC and Precision-Recall curves for multiple models
 mscurves <- evalmod(msmdat)
 autoplot(mscurves)
