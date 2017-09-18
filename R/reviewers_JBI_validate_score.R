@@ -67,10 +67,57 @@ candidate_list_scores <- arrange(candidate_list_scores,desc(collate_scores))
 head(candidate_list_scores)
 
 print.xtable(xtable(candidate_list_scores))
-# Carbidopa
-# "Apathy"                          "Aphasia"                         "Flat affect"                    
-# Hypokinesia"                     "Libido increased"                "Muscle contractions involuntary"
-# Paranoia"   
+
+
+#==================================================================
+# https://stats.stackexchange.com/questions/104040/resampling-simulation-methods-monte-carlo-bootstrapping-jackknifing-cross
+# https://github.com/jrnold/resamplr
+# https://drsimonj.svbtle.com/easy-leave-one-out-cross-validation-with-pipelearner
+
+Yvar <- c(8,9,10,13,12, 14,18,12,8,9,   1,3,2,3,4)
+Xvar <- c(rep("A", 5),  rep("B", 5),    rep("C", 5))
+mydf <- data.frame (Yvar, Xvar)
+
+boot.samples <- list()
+for(i in 1:10) {
+  t.xvar <- Xvar[ sample(length(Xvar), length(Xvar), replace=TRUE) ]
+  t.yvar <- Yvar[ sample(length(Yvar), length(Yvar), replace=TRUE) ]
+  b.df <- data.frame (t.xvar, t.yvar) 
+  boot.samples[[i]] <- b.df 
+}
+str(boot.samples)
+boot.samples[1]
+
+permt.samples <- list()
+for(i in 1:10) {
+  t.xvar <- Xvar[ sample(length(Xvar), length(Xvar), replace=FALSE) ]
+  t.yvar <- Yvar[ sample(length(Yvar), length(Yvar), replace=FALSE) ]
+  b.df <- data.frame (t.xvar, t.yvar) 
+  permt.samples[[i]] <- b.df 
+}
+str(permt.samples)
+permt.samples[1]
+
+# ============================
+
+R12 <- np.random.rand(50, 100)
+R13 <- np.random.rand(50, 40)
+R23 <- np.random.rand(100, 40)
+
+t1 <- fusion.ObjectType('Type 1', 10)
+t2 <- fusion.ObjectType('Type 2', 20)
+t3 <- fusion.ObjectType('Type 3', 30)
+relations <-fusion.Relation(R12, t1, t2)    fusion.Relation(R13, t1, t3) fusion.Relation(R23, t2, t3)
+fusion_graph <- fusion.FusionGraph()
+fusion_graph.add_relations_from(relations)
+
+fuser <- fusion.Dfmf()
+fuser.fuse(fusion_graph)
+print(fuser.factor(t1).shape)
+
+
+
+
 
 
 
