@@ -236,12 +236,13 @@ for (i in 1:length(temp)){
   mydata <- read.delim(temp[i], header=TRUE,sep='\t')
   mydata <- mydata[,1:2]
   mydata <-graph.data.frame(mydata,directed=FALSE)
-  in1 <- get_gstatistics_long(mydata)
+  in1 <- get_gstatistics(mydata)  #_long
   allstats <- rbind(allstats,in1[nrow(in1),])
 } 
 
 rm(list = ls(pattern = glob2rx("*.txt"))) # get rid of useless file data from memory
-table1 <- xtable(allstats,digits=c(3,3,0,0,3,0,3,3,3,3,3)) # latex table
+allstats <- allstats[order(allstats$between),]  #sort allstats according to 
+table1 <- xtable(allstats,digits=c(3,3,1,1,3,1,3,3,3,3,3,3)) # latex table
 
 
 
