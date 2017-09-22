@@ -56,7 +56,8 @@ cid(sdfset) <- as.character(blockmatrix[,"DRUGBANK_ID"])
 
 ## Generate APset and FPset (note FPset: has better search performance)
 apset <- sdf2ap(sdfset)
-fpset <- desc2fp(apset, descnames=2048, type="FPset")
+#fpset <- desc2fp(apset, descnames=2048, type="FPset")
+fpset <- desc2fp(apset, descnames=1024, type="FPset")
 
 ## Subsetting by cid slot using drugbank ids should work now consistently
 #sdfset["DB00472"]
@@ -66,8 +67,12 @@ fpset <- desc2fp(apset, descnames=2048, type="FPset")
 drugs <- candidate_list$drugbank_id
 currentdrugs <- joint_list$drugbank_id[1:8]  # drugs currently treating Alzhiemers
 drugs <- c(drugs,currentdrugs)
+
 drugnames <- c(candidate_list$name,joint_list$name[1:8]) # get rid of DBXXX
 fpdrugs <- fpset[drugs]   # extract our 69 + 8 chemical signatures from the many. 
+
+fpdrugs <- sample(fpdrugs)#randomize order of drugs
+
 params <- genParameters(fpdrugs)  # params is used to calculate similarity scores
 
 results1 <- fpSim(fpdrugs[[71]], fpdrugs, top=77, parameters=params,method="Tanimoto") 
@@ -126,7 +131,7 @@ library(ape)
 library(sparcl)
 library(cluster) # used for kmeans and silhoutte plot
 
-cl <- kmeans(simMA,10,nstart=5)
+cl <- kmeans(simMA,10,nstart=10) #cl <- kmeans(simMA,10,nstart=5)
 sk <- silhouette(cl$cl,dist(simMA))
 plot(sk)
 
@@ -134,7 +139,7 @@ par(mar=c(3, 3, 3, 3))
 hc <- hclust(as.dist(1-simMA), method="complete")
 plot(as.phylo(hc), cex = 0.9, label.offset = 0.01)
 
-y <- cutree(hc,10)
+y <- cutree(hc,20) #10
 ColorDendrogram(hc,y=y,labels=drugnames,branchlength = 0.7,cex = 2)
 
 
