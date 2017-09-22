@@ -235,10 +235,15 @@ allstats <- data.frame()
 for (i in 1:length(temp)){
   mydata <- read.delim(temp[i], header=TRUE,sep='\t')
   mydata <- mydata[,1:2]
-  mydata <-graph.data.frame(mydata,directed=FALSE)
-  in1 <- get_gstatistics(mydata)  #_long
-  allstats <- rbind(allstats,in1[nrow(in1),])
+  mygraph <-graph.data.frame(mydata,directed=FALSE)
+  in1 <- get_gstatistics(mygraph)  #_long
+  filen <- temp[i]
+  allstats <- rbind(allstats,in1[nrow(in1),],make.row.names = FALSE)
+  #allstats
+  cat(temp[i],"\n")
 } 
+
+rownames(allstats) <- c(sub('\\.txt$', '', temp) )
 
 rm(list = ls(pattern = glob2rx("*.txt"))) # get rid of useless file data from memory
 allstats <- allstats[order(allstats$between),]  #sort allstats according to 
