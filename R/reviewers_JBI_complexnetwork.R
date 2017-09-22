@@ -29,6 +29,11 @@ joint_list <- names_ids(drug_list) # we need DB ids as well as DB names
 all_targets <- get_all_drug_targets(joint_list)  
 ct <- candidate_targets[,c(2,5)]
 ct <- ct %>% drop_na()
+
+# these two lines needed further down
+ctt <- rbind(ct,all_targets[,c(2,5)])
+write.csv(ctt,"drugtoprotein.csv")
+
 targets_ig <- graph.data.frame(ct,directed=FALSE)
 gstats <- get_gstatistics(targets_ig)
 plot(targets_ig)
@@ -239,17 +244,73 @@ for (i in 1:length(temp)){
   in1 <- get_gstatistics(mygraph)  #_long
   filen <- temp[i]
   allstats <- rbind(allstats,in1[nrow(in1),],make.row.names = FALSE)
-  #allstats
   cat(temp[i],"\n")
 } 
 
-rownames(allstats) <- c(sub('\\.txt$', '', temp) )
-
+rownames(allstats) <- c(sub('\\.txt$', '', temp) ) #get rid of file extension
 rm(list = ls(pattern = glob2rx("*.txt"))) # get rid of useless file data from memory
 allstats <- allstats[order(allstats$between),]  #sort allstats according to 
 table1 <- xtable(allstats,digits=c(3,3,1,1,3,1,3,3,3,3,3,3)) # latex table
 
+# more drug centric oriented analysis
+# create the disease to drug to targetprotein network for visual inspection 
+
+setwd("C:/R-files/sider") 
+drug25 <- read.csv(file='C://R-files//sider//drugtoprotein25.csv', header=TRUE, sep=",")
+
+graph25 <-graph.data.frame(drug25,directed=FALSE)
+graphnames <-V(graph25)$name
+ad <- get.adjacency(graph25)
+
+nodecolor=character(ncol(ad))  # create a character for every column in adjaceny matrix
+nodelabel<-V(graph25)$name
+nodesize <- vector(length=152)
+nodeshape <- vector(mode="character",length=152)
+nodeshape[1:120]<-"circle"
+nodeshape[121:152] <- "triangle"
+nodesize[1:120] <- 5
+nodesize[121:152] <- 15
+nodecolor[121:152] <-"tomato" # figure where the proteins and where the drugs are
+nodecolor[1:120] <-"lightgreen" 
+
+graph25<-as.undirected(graph25); 
+plot(graph25, edge.color="darkgray", 
+     vertex.color=nodecolor,
+     vertex.label=nodelabel,
+     vertex.shape=nodeshape,
+     vertex.size=nodesize,
+     vertex.label.cex=0.6, 
+     vertex.label.font=0.5, 
+     vertex.frame.color="white",
+     #vertex.frame.color="darkgreen",
+     vertex.label.color="black", 
+     vertex.label.family = "sans",
+     layout=layout.kamada.kawai(graph25))
+
+tkplot(graph25,layout = layout.fruchterman.reingold,vertex.label = nodelabel,
+       vertex.label.color= "black",
+       vertex.size=nodesize, 
+       vertex.color=nodecolor,
+       vertex.shape=nodeshape,
+       vertex.size=nodesize,
+       edge.arrow.size=0, edge.curved=FALSE)
 
 
+tkid <- tkplot(graph25) #tkid is the id of the tkplot that will open
+l <- tkplot.getcoords(tkid) # grab the coordinates from tkplot
+plot(graph25, layout=l)
+
+plot(graph25, edge.color="darkgray", 
+     vertex.color=nodecolor,
+     vertex.label=nodelabel,
+     vertex.shape=nodeshape,
+     vertex.size=nodesize,
+     vertex.label.cex=0.6, 
+     vertex.label.font=0.5, 
+     vertex.frame.color="white",
+     #vertex.frame.color="darkgreen",
+     vertex.label.color="black", 
+     vertex.label.family = "sans",
+     layout=l)
 
 
