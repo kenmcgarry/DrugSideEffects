@@ -292,9 +292,8 @@ get_gstatistics <- function(gt) {
   dens <-graph.density(gt)
   hubness <-hub_score(gt)$vector
   #author <-authority.score(gt)$vector
-  bpow <- mean(igraph::power_centrality(gt))
-  gstats <- data.frame(modularity,avepath,nedges,nverts,transit,degree,diameter,
-                       clos,between,dens,hubness,bpow )
+  #bpow <- mean(igraph::power_centrality(gt))
+  gstats <- data.frame(modularity,avepath,nedges,nverts,transit,degree,diameter,clos,between,dens,hubness)
   return(gstats)
 }
 
@@ -358,6 +357,24 @@ performance <- function(table,n=2){
   cat(result)
 }
 
+
+# triangle vertex shape
+mytriangle <- function(coords, v=NULL, params) {
+  vertex.color <- params("vertex", "color")
+  if (length(vertex.color) != 1 && !is.null(v)) {
+    vertex.color <- vertex.color[v]
+  }
+  vertex.size <- 1/200 * params("vertex", "size")
+  if (length(vertex.size) != 1 && !is.null(v)) {
+    vertex.size <- vertex.size[v]
+  }
+  
+  symbols(x=coords[,1], y=coords[,2], bg=vertex.color,
+          stars=cbind(vertex.size, vertex.size, vertex.size),
+          add=TRUE, inches=FALSE)
+}
+
+add_shape("triangle", clip=shapes("circle")$clip,plot=mytriangle)
 
 # ------------ interesting dynamic variable names creation -------
 #var_names <- paste("v", 1:3, sep="")
