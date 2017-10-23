@@ -17,9 +17,6 @@ As the code currently stands it is now generic enough to tackle any disease as l
 
 `venn-5.pdf` - example Venn Diagram for Alzheimer's drugs and their common overlapping side-effects. The diagram is limited to five groups (drugs) maximum and so the central value of 10 is in fact 8, because 9 drugs were used to generate the candidate drugs. Just be aware of this limitation when plotting Venn's if you have more than five drugs. Generally, the more drugs you conduct the search with, then the fewer side-effects these will have in common.
 
-### whats next?
-Further modifications to the integration technique are required.
-
 ### completed
 working functions can now handle:
 + **Pathway analysis** with KEGG and Reactome for groups of gene/proteins
