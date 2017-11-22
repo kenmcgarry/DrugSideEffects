@@ -1,19 +1,19 @@
 ### about these files
 As the code currently stands it is now generic enough to tackle any disease as long as the users know the [UMLS](https://www.nlm.nih.gov/research/umls/ "Unified Medical Language System") code for their disease of interest e.g. "C0002395" is the code for Alzheimer's disease.
 
-`reviewers_JBI_run.R` - Run this file first. You will need to know the UMLS code for your disease. Calls in the functions defined by reviewers_JBI_functions.R, assumes data structures are already loaded in. Then runs the functions and generates the candidate drugs. 
+`reposition_run.R` - Run this file first. You will need to know the UMLS code for your disease. Calls in the functions defined by reviewers_JBI_functions.R, assumes data structures are already loaded in. Then runs the functions and generates the candidate drugs. 
 
-`reviewers_JBI_LoadData.R` - as it suggests loads in the tsv. files and creates the R data structures.
+`reposition_LoadData.R` - as it suggests loads in the tsv. files and creates the R data structures.
 
-`reviewers_JBI_functions.R` - contains majority (so far) of function defintions for processing to generate the candidates drugs for repurposing.
+`reposition_functions.R` - contains majority (so far) of function defintions for processing to generate the candidates drugs for repurposing.
 
-`reviewers_JBI_pathways.R` - obtains the target proteins for each drug and performs an analysis on their shared pathways.
+`reposition_pathways.R` - obtains the target proteins for each drug and performs an analysis on their shared pathways.
 
-`reviewers_JBI_chemstructure.R` - obtains the similarities between the 77 drugs (8 conventional + 69 candidate).
+`reposition_chemstructure.R` - obtains the similarities between the 77 drugs (8 conventional + 69 candidate).
 
-`reviewers_JBI_integrate.R` - combine all the scores and metrics from pathway analysis, GO and DO, on-targets etc etc.
+`reposition_integrate.R` - combine all the scores and metrics from pathway analysis, GO and DO, on-targets etc etc.
 
-`reviewersJBIloadData.RData` - is the R environment from reviewers_JBI_LoadData.R avoids the need to run it afresh everytime you power up R.
+`reposition_loadData.RData` - is the R environment from reviewers_JBI_LoadData.R avoids the need to run it afresh everytime you power up R.
 
 `venn-5.pdf` - example Venn Diagram for Alzheimer's drugs and their common overlapping side-effects. The diagram is limited to five groups (drugs) maximum and so the central value of 10 is in fact 8, because 9 drugs were used to generate the candidate drugs. Just be aware of this limitation when plotting Venn's if you have more than five drugs. Generally, the more drugs you conduct the search with, then the fewer side-effects these will have in common.
 
@@ -31,4 +31,4 @@ working functions can now handle:
 
 + **Other diseases** At the moment I have concentrated on Alzhiemers disease, the system needs to be tested with others. I tackled the diseases investigated by Zhang and Wang.
 
-#### `Ken McGarry, 1st September 2017.`
+#### `Ken McGarry, 22nd November 2017.`
