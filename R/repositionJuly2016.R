@@ -1,21 +1,23 @@
-# pubchem.r
-# Ken McGarry 27/5/2016
+# repositionJuly2016.r
+# Ken McGarry 27/7/2016
 # Use cygwin to download this file as web browsers like firefox are not up to 8GB downloads!
 # http://biocluster.ucr.edu/~tbackman/bioassayR/pubchem_protein_only.sqlite
 # source("http://bioconductor.org/biocLite.R")
 # biocLite("dplyr")
 
+library(DO.db)
+library(DOSE)
+library(graph)
+library(clusterProfiler)
 library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(igraph)
 library(biomaRt)
 library("org.Hs.eg.db") # for ncbi to gene conversion 
-
+library(VennDiagram)
 library(paxtoolsr)
 library(rJava)
-
-#library(rcdk)
 library(ReactomePA)
 library(ChemmineR)
 library(ChemmineOB)
@@ -158,6 +160,7 @@ dnames <- c("Donepezil","Galantamine","Rivastigmine",
             "Naltrexone")
 
 
+# CUT AND PASTE HERE 30/05/2017
 
 setwd("C:/R-files/bigfiles")
 sdfset <- read.SDFset("structures.sdf")
@@ -170,20 +173,22 @@ cid(sdfset) <- as.character(blockmatrix[,"DRUGBANK_ID"])
 
 ## Generate APset and FPset (note FPset: has better search performance)
 apset <- sdf2ap(sdfset)
-fpset <- desc2fp(apset, descnames=1024, type="FPset")
+fpset <- desc2fp(apset, descnames=2048, type="FPset")
 
 ## Subsetting by cid slot using drugbank ids should work now consistently
 sdfset["DB00472"]
 apset["DB00472"]
 
-fpdrugs <- fpset[names(drugs)]
-params <- genParameters(fpdrugs)  # including Donepezil, Galantamine and Rivastigmine
+# Overwrite drug names with our candidate drugs using drugbank_id
+drugs <- candidate_list$drugbank_id
+fpdrugs <- fpset[drugs]   # extract our 69 chemical signatures from the many. THINK ABOUT CURRENT DRUGS
+params <- genParameters(fpdrugs)  # 
 
-results1 <- fpSim(fpdrugs[[1]], fpdrugs, top=13, parameters=params,method="Tanimoto") 
-results2 <- fpSim(fpdrugs[[2]], fpdrugs, top=13, parameters=params,method="Tanimoto") 
-results3 <- fpSim(fpdrugs[[3]], fpdrugs, top=13, parameters=params,method="Tanimoto") 
+results1 <- fpSim(fpdrugs[[1]], fpdrugs, top=25, parameters=params,method="Tversky") 
+results2 <- fpSim(fpdrugs[[2]], fpdrugs, top=25, parameters=params,method="Tanimoto") 
+results3 <- fpSim(fpdrugs[[3]], fpdrugs, top=25, parameters=params,method="Tanimoto") 
 
-results1 <- cbind(drugs[rownames(results1)],results1)
+results1 <- cbind(candidate_list$name[1:25],results1) # USE drug names and NOT drugbank ID's
 results2 <- cbind(drugs[rownames(results2)],results2)
 results3 <- cbind(drugs[rownames(results3)],results3)
 
@@ -192,59 +197,28 @@ print.xtable(xtable(results1))
 print.xtable(xtable(results2))
 print.xtable(xtable(results3))
 
-print.xtable(results,label='comp',caption = 'Similarity measures for the 10 drugs based on 1024-length, atom-pair fingerprints')
-
+#print.xtable(results,label='comp',caption = 'Similarity measures drugs based on 2048-length fingerprints')
 # Creates the similarity score matrix and clusters them.
 simMA <- sapply(cid(fpdrugs), function(x) fpSim(x=fpdrugs[x], fpdrugs, sorted=FALSE)) 
-colnames(simMA)<-as.character(drugs[cid(fpdrugs)])
-rownames(simMA)<-as.character(drugs[cid(fpdrugs)])
+colnames(simMA)<-candidate_list$name
+rownames(simMA)<-candidate_list$name
 
-# version 1 of plotting dendro
 library(ape)
-library("dendextend")
-library("dendextendRcpp")  
+library(sparcl)
+library(cluster) # used for kmeans and silhoutte plot
 
-# using piping to get the dend
-par(mar=c(5, 5, 5, 4))
-dend <- simMA[,-6] %>% dist %>% hclust %>% as.dendrogram
-# plot + color the dend's branches before, based on 3 clusters:
-#dend %>% color_branches(k=4) %>% plot(horiz=TRUE,lwd = 3)
-dend %>% plot(horiz=TRUE,lwd = 4,col = "blue")
-# add horiz rect
-dend %>% rect.dendrogram(k=4,horiz=TRUE,border = 2, lty = 3, lwd = 3)
-# add horiz (well, vertical) line:
-abline(v = heights_per_k.dendrogram(dend)["3"] + .6, lwd = 2, lty = 3, col = "blue")
+cl <- kmeans(simMA,10,nstart=50)
+sk <- silhouette(cl$cl,dist(simMA))
+plot(sk)
 
-# version 2 of plotting dendro
-par(mar=c(5, 5, 5, 4))
+par(mar=c(3, 3, 3, 3))
+hc <- hclust(as.dist(1-simMA), method="complete")
 plot(as.phylo(hc), cex = 0.9, label.offset = 0.01)
-hc <- hclust(as.dist(1-simMA), method="single")
-plot(as.dendrogram(hc), edgePar=list(col=4, lwd=3), horiz=T) 
-rect.hclust(hc,k=4,border="red")
 
-# version 3 of plotting dendro
-library(cluster)
-library(ggplot2)
-library(ggdendro)     # for dendro_data(...)
-dst   <- daisy(simMA, metric = c("gower"), stand = FALSE)
-hca   <- hclust(dst, method = "average")
-k     <- 5
-clust <- cutree(hca,k=k)  # k clusters
-
-dendr    <- dendro_data(hca, type="rectangle") # convert for ggplot
-clust.df <- data.frame(label=rownames(simMA), cluster=factor(clust))
-dendr[["labels"]]   <- merge(dendr[["labels"]],clust.df, by="label")
-rect <- aggregate(x~cluster,label(dendr),range)
-rect <- data.frame(rect$cluster,rect$x)
-ymax <- mean(hca$height[length(hca$height)-((k-2):(k-1))])
-
-ggplot() +   geom_segment(data=segment(dendr), aes(x=x, y=y, xend=xend, yend=yend)) + 
-  geom_text(data=label(dendr), aes(x, y, label=label, hjust=0, color=cluster), size=5) +
-  geom_rect(data=rect, aes(xmin=X1-.3, xmax=X2+.3, ymin=0, ymax=ymax), color="red", fill=NA)+
-  coord_flip() + geom_hline(yintercept=0.21, color="blue") + scale_y_reverse(expand=c(0.2, 0))# + theme_dendro()
-
-
-
+y <- cutree(hc,6)
+ColorDendrogram(hc,y=y,labels=candidate_list$name,branchlength = 0.7,cex = 2)
+plot(as.dendrogram(hc), edgePar=list(col=4, lwd=3), horiz=TRUE) #list(col=4, lwd=3)
+rect.hclust(hc,k=5,border="red")
 
 #--------- gene ontology (GO) and disease ontology (DO) integration ------
 library(clusterProfiler)
@@ -397,7 +371,7 @@ xtable(stuff[40:50,])
 
 # --------------------------- compute statistics for each drug PPI network --------------------------------
 
-setwd("C:/R-files/reposition") # need to point where STITCH datafiles are.
+setwd("C:/R-files/reposition/proteins") # need to point where STITCH datafiles are.
 
 temp <-  list.files(pattern="*.txt") # list of all .txt files now in temp
 allstats <- data.frame()
@@ -440,7 +414,36 @@ tkplot(giantnet,layout = layout.fruchterman.reingold,vertex.label = nodelabel,
        vertex.label.color= "black",vertex.size=nodesize, vertex.color=nodecolor,
        edge.arrow.size=0, edge.curved=FALSE)
 
+# -------------- plot Anaums network -------------------
+ssri <- read.delim('C:\\R-files\\reposition\\ssri.csv', header=TRUE,sep=',')
+disease <- as.matrix(ssri[,c(2,4)])    # V2=drug V4 =targets
+g <- graph.edgelist(disease,directed=FALSE)
 
+nodesize=degree(g)*2
+
+ad <- get.adjacency(g)
+nodecolor=character(ncol(ad))  # create a character for every column in adjaceny matrix,
+x <- 1:ncol(ad)
+
+nodelabel<-V(g)$name
+d1<-as.character(disease[,1])
+d2<-as.character(disease[,2])
+
+for ( i in 1:ncol(ad)){
+  z<-(sapply(nodelabel[i],grep,d2))
+  if(is.integer(z)){
+    nodecolor[i]<-"pink"}
+  y<-(sapply(nodelabel[i],grep,d1)) ## Protein Target
+  if(is.integer(y)){   
+    nodecolor[i]<-"lightblue"}  ## Drug                            
+}
+
+tkplot(g,layout = layout.fruchterman.reingold,vertex.label = nodelabel,
+       vertex.label.color= "black",vertex.size=nodesize, vertex.color=nodecolor,
+       edge.arrow.size=0, edge.curved=FALSE)
+
+
+# ------------------------------------------------------------------------------
 
 # Calculate some statistics about the disease gene network
 get_gstatistics <- function(gt) {
@@ -501,6 +504,202 @@ get_gstatistics_short <- function(gt) {
   gstats <- data.frame(degree,between,hubness )
   return(gstats)
 }
+
+## -------------- Disease Ontology using functions from the defunct DOSim package -------------------
+
+# The diseases that are treated by the top ten drugs as per figure 5 in paper.
+
+# DOID:10652 alzheimers
+# DOID:14330 parkinsons
+# DOID:5419 schizophrenia
+# DOID:8646 psychosis
+# DOID:1470 major depressive disorder
+# DOID:3223 complex regional pain syndrome
+# DOID:1826 epilepsy syndrome
+# DOID:10808 gastric ulcer
+# DOID:1508 candidiasis
+# DOID:13938 amenorrhea
+
+# create  a table or venn diagram to show common terms
+diseases <- c("DOID:14330","DOID:10652","DOID:5419","DOID:8646","DOID:1470","DOID:3223","DOID:1826","DOID:10808","DOID:1508","DOID:13938")
+
+terms <- getAncestors(diseases[2])
+
+get(diseases[1], DOANCESTOR) # using library(DO.db)
+
+fullterms <- getDoTerm(terms)
+
+df <- data.frame(matrix(unlist(fullterms),  byrow=T),stringsAsFactors=FALSE)
+a<-df[1:24,];b<-df[25:48,]#;c<-df[25:37,]
+df2 <- data.frame(a,b)
+  
+xtable(df2)
+
+g <- getDOGraph("DOID:14330","DOID:10652","DOID:5419","DOID:8646","DOID:1470",
+                "DOID:3223","DOID:1826","DOID:10808","DOID:1508","DOID:13938")
+plot(g)
+
+
+venn.plot <- venn.diagram(terms[1:4], 
+                          NULL, 
+                          fill=c("red", "blue","green","yellow"), 
+                          alpha=c(0.5,0.5,0.5,0.5), 
+                          cex = 2, 
+                          cat.fontface=2, 
+                          margins =c(10,10),
+                          cat.cex=2,
+                          #main = "Venn Diagram showing shared side effects for donepezil,galantamine,rivastigmine",
+                          category.names=c("parkinsons", "alzheimers","schizophrenia","psychosis"))
+grid.draw(venn.plot)
+
+# --------------- DOSim functions from defunct package ------------------
+
+.First.lib<-function(lib, pkgname){
+  #library.dynam(pkgname, pkgname, lib)
+  initialize_DOSimEnv()
+}
+
+
+initialize_DOSimEnv <-
+  function(){
+    #print("initializing DOSim package ...")		
+    data("DOSimEnv")
+    #load("DOSimEnv.rda");
+    #assign("DOSimEnv",DOSimEnv,envir=.GlobalEnv)  	
+    #print("finished.")
+  }
+
+
+#-----------------------
+getChildren <-
+  function(dolist,verbose=TRUE){
+    if(is.list(dolist)){
+      dolist<-unique(unlist(dolist))
+    }else{
+      dolist<-unique(dolist)
+    }
+    if(verbose){
+      print("Start to fetch the children")
+    }
+    if(!exists("DOSimEnv")) initialize_DOSimEnv()	
+    children<-get("children",envir=DOSimEnv)
+    res<-children[dolist[dolist %in% names(children)]]
+    notmatch<-dolist[! dolist %in% names(children)]
+    if(length(notmatch)>0){
+      for(i in 1:length(notmatch)){
+        res[[notmatch[i]]]<-NA
+      }
+    }
+    res
+  }
+#-------------------
+getAncestors <-
+  function(dolist,verbose=TRUE){
+    if(is.list(dolist)){
+      dolist<-unique(unlist(dolist))
+    }else{
+      dolist<-unique(dolist)
+    }
+    if(verbose){
+      print("Start to fetch the ancestors")
+    }
+    if(!exists("DOSimEnv")) initialize_DOSimEnv()	
+    ancestor<-get("ancestor",envir=DOSimEnv)
+    res<-ancestor[dolist[dolist %in% names(ancestor)]]
+    notmatch<-dolist[! dolist %in% names(ancestor)]
+    if(length(notmatch)>0){
+      for(i in 1:length(notmatch)){
+        res[[notmatch[i]]]<-NA
+      }
+    }
+    res
+  }
+
+
+getDoTerm <-
+  function(dolist){
+    if(is.list(dolist)){
+      dolist<-unique(unlist(dolist))
+    }else{
+      dolist<-unique(dolist)
+    }
+    
+    if(!exists("DOSimEnv")) initialize_DOSimEnv()	
+    doterm<-get("doterm",envir=DOSimEnv)
+    res<-doterm[dolist[dolist %in% names(doterm)]]
+    notmatch<-dolist[! dolist %in% names(doterm)]
+    if(length(notmatch)>0){
+      warning(paste(" ===>", length(notmatch), "of", length(dolist), "DOIDs not mapped to current disease ontology\n"))
+    }
+    res
+  }
+
+getDoAnno <-
+  function(dolist){
+    if(is.list(dolist)){
+      dolist<-unique(unlist(dolist))
+    }else{
+      dolist<-unique(dolist)
+    }
+    if(!exists("DOSimEnv")) initialize_DOSimEnv()	
+    doanno<-get("doanno",envir=DOSimEnv)
+    res<-doanno[dolist[dolist %in% names(doanno)]]
+    notmatch<-dolist[! dolist %in% names(doanno)]
+    if(length(notmatch)>0){
+      warning(paste(" ===>", length(notmatch), "of", length(dolist), "DOIDs not mapped to current disease ontology\n"))
+    }
+    res
+    
+  }
+
+DOGraph <-
+  function(term, env){
+    oldEdges <- vector("list", length = 0)
+    oldNodes <- vector("character", length = 0)
+    newN <- term
+    done <- FALSE
+    while (!done) {
+      newN <- newN[!(newN %in% oldNodes)]
+      if (length(newN) == 0)
+        done <- TRUE
+      else {
+        oldNodes <- c(oldNodes, newN)
+        numE <- length(newN)
+        #nedges <- AnnotationDbi::mget(newN, env = env, ifnotfound = NA)
+        nedges <- mget(newN, env=env,ifnotfound= NA)
+        nedges <- nedges[!is.na(nedges)]
+        oldEdges <- c(oldEdges, nedges)
+        if (length(nedges) > 0)
+          newN <- sort(unique(unlist(nedges)))
+        else newN <- NULL
+      }
+    }
+    rE <- vector("list", length = length(oldNodes))
+    names(rE) <- oldNodes
+    rE[names(oldEdges)] <- oldEdges
+    rE <- lapply(rE, function(x) match(x, oldNodes))
+    names(oldNodes) = oldNodes
+    return(new("graphNEL", nodes = oldNodes, edgeL = lapply(rE,function(x) list(edges = x)), edgemode = "directed"))
+  }
+
+getDOGraph <-
+  function(term, prune=Inf){
+    if(!require(graph))
+      stop("Package graph is required for function getDOGraph")
+    if(!exists("DOSimEnv")) initialize_DOSimEnv()
+    ENV_Child2Parent<-get("ENV_Child2Parent",envir=DOSimEnv);
+    
+    G<-DOGraph(term,ENV_Child2Parent)		
+    if(prune != Inf){
+      dis = johnson.all.pairs.sp(G)		
+      inc = unique(unlist(sapply(term, function(t) names(dis[t,])[dis[t,] < prune])))
+      G = subGraph(nodes(G)[inc], G)
+    }		
+    G
+  }
+
+
+
 
 
 
