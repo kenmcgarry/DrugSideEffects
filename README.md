@@ -20,4 +20,4 @@ This work augments and takes further the issues we discussed in our [UKCI-2015](
 > McGarry K, Slater N, and Amaning A, (2015). Identifying candidate drugs for repositioning by graph based modeling techniques based on drug side-effects, *The 15th UK Workshop on Computational Intelligence*, UKCI-2015, Exeter, Uk, 7th-9th Sept, 2015.
 
 ## The work is reasonably mature enough but some modifications are required - see R code folder.
-## `Project last update, 16th September 2017.`
+## `Project last update, 14th May 2018.`
