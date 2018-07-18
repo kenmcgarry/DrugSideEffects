@@ -7,7 +7,7 @@ Whilst no guarentees can be made as to the eventual repostioning success of any 
 
 This work is described in our [Knowledge Based Systems](https://www.sciencedirect.com/science/article/pii/S0950705118303332) paper. Please cite it, if you find the source code and data useful. 
 
-Ken McGarry, Yitka Graham, Sharon McDonald and Anuam Rashid, RESKO: Repositioning drugs by using side effects and knowledge from ontologies, https://doi.org/10.1016/j.knosys.2018.06.017 2018.
+> Ken McGarry, Yitka Graham, Sharon McDonald and Anuam Rashid, RESKO: Repositioning drugs by using side effects and knowledge from ontologies, *Knowledge Based Systems*,  https://doi.org/10.1016/j.knosys.2018.06.017 2018.
 
 ### References
 > Law V, Knox C, Djoumbou Y, Jewison T, Guo AC, Liu Y, Maciejewski A, Arndt D, Wilson M, Neveu V, Tang A, Gabriel G, Ly C, Adamjee S, Dame ZT, Han B, Zhou Y, Wishart DS. DrugBank 4.0: shedding new light on drug metabolism. *Nucleic Acids Res.* 2014 Jan 1;42(1):D1091-7. 24203711 
